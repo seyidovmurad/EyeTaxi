@@ -75,6 +75,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="..\AdminPanel\Models\Car.cs">
+      <Link>Models\Car.cs</Link>
+    </Compile>
+    <Compile Include="..\AdminPanel\Models\Driver.cs">
+      <Link>Models\Driver.cs</Link>
+    </Compile>
+    <Compile Include="Models\History.cs" />
     <Compile Include="Services\BingMapsRESTService.cs" />
     <Compile Include="Services\GetRouteService.cs" />
     <Compile Include="Services\JsonSaveService.cs" />
