@@ -21,6 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using UserPanel.Services;
 using static UserPanel.Services.ReverseGeocodingService;
 
 namespace UserPanel.Views

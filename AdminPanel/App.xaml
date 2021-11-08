@@ -15,5 +15,8 @@
         <DataTemplate DataType="{x:Type viewmodels:NavigationBarViewModel}">
             <views:NavigationBarView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:DriverEditViewModel}">
+            <views:DriverEditView/>
+        </DataTemplate>
     </Application.Resources>
 </Application>
