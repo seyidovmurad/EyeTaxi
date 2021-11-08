@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using UserPanel.Services;
 using UserPanel.Stores;
 using UserPanel.ViewModels;
 
@@ -29,6 +30,8 @@ namespace UserPanel.Views
             NavigationStore navigationStore = new NavigationStore();
             navigationStore.SelectedViewModel = new MapVIewModel();
 
+
+            var a = new AutoSuggestService();
             DataContext = new MainViewModel(navigationStore);
 
             //NavigationStore navigationStore = new NavigationStore();

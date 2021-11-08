@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using UserPanel.Services;
 
 namespace AdminPanel.ViewModels
 {
@@ -28,42 +29,42 @@ namespace AdminPanel.ViewModels
 
         public DriverListViewModel()
         {
-            Drivers = new ObservableCollection<Driver>
-            {
-                new Driver(200,3,"Murad ","055",new Location(), new Car("a-aa","bmw","red",200)),
-                new Driver(200,3,"Kimse","055",new Location(), new Car("a-aa","bmw","red",200)),
-                new Driver(200,3,"Nese ","055",new Location(), new Car("a-aa","bmw","red",200))
-            };
-
+            Drivers = JsonSaveService<ObservableCollection<Driver>>.Load("driver");
+            if(Drivers == null)
+                Drivers = new ObservableCollection<Driver>();
             AddCommand = new RelayCommand(add =>
             {
-                Driver driver = new Driver();
-                EditDriver(driver);
+                Driver driver = new Driver(200, 3, "Murad ", "055", new Location(), new Car("a-aa", "bmw", "red", 200));
+                Drivers.Add(driver);
+                JsonSaveService<ObservableCollection<Driver>>.Save(Drivers, "driver");
             });
             EditCommand = new RelayCommand(edit =>
             {
-                EditDriver(SelectedDriver);
+                //EditDriver(SelectedDriver);
             });
             ShowCommand = new RelayCommand(show => { });
             DeleteCommand = new RelayCommand(delete => 
             {
                 Driver temp = SelectedDriver;
                 if (MessageBox.Show("Do you want to delete this driver?", "Deleting Driver", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
                     Drivers.Remove(temp);
+                    JsonSaveService<ObservableCollection<Driver>>.Save(Drivers, "driver");
+                }
             });
         }
 
         private void EditDriver(Driver driver)
         {
-            DriverEditViewModel model = new DriverEditViewModel();
-            model.Driver = driver;
-            DriverEditView editView = new DriverEditView(model);
-            //if (editView.ShowDialog() == true)
-            //{
-            editView.ShowDialog();
-                if (!Drivers.Contains(driver))
-                    Drivers.Add(model.Driver);
-            //}
+            //DriverEditViewModel model = new DriverEditViewModel();
+            //model.Driver = driver;
+            //DriverEditView editView = new DriverEditView(model);
+            ////if (editView.ShowDialog() == true)
+            ////{
+            //editView.ShowDialog();
+            //    if (!Drivers.Contains(driver))
+            //        Drivers.Add(model.Driver);
+            ////}
         }
 
     }

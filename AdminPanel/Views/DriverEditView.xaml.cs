@@ -1,5 +1,4 @@
-﻿using AdminPanel.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace AdminPanel.Views
@@ -18,12 +18,11 @@ namespace AdminPanel.Views
     /// <summary>
     /// Interaction logic for DriverEditView.xaml
     /// </summary>
-    public partial class DriverEditView : Window
+    public partial class DriverEditView : UserControl
     {
-        public DriverEditView(DriverEditViewModel model)
+        public DriverEditView()
         {
             InitializeComponent();
-            DataContext = model;
         }
     }
 }

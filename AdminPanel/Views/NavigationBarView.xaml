@@ -9,6 +9,6 @@
     <StackPanel Orientation="Horizontal" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top">
         <Button FontSize="20" Command="{Binding NavigateDriverPricingCommand}">Pricing</Button>
         <Button FontSize="20" Command="{Binding NavigateDriverListCommand}">Drivers</Button>
-        <Button FontSize="20" Command="{Binding NavigateDriverPricingCommand}">Add Driver</Button>
+        <Button FontSize="20" Command="{Binding NavigateAddDriverCommand}">Add Driver</Button>
     </StackPanel>
 </UserControl>
