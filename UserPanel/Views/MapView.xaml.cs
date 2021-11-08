@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maps.MapControl.WPF;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
@@ -38,6 +39,12 @@ namespace UserPanel.Views
         {
             InitializeComponent();
             Map.CredentialsProvider = new ApplicationIdCredentialsProvider(ConfigurationManager.AppSettings["MapKey"]);
+
+            tb.FilterMode = AutoCompleteFilterMode.Contains;
+
+            tb.ItemsSource = new string[] { "Azer", "Azer Qara" };
+
+
         }
 
         private void ChckBox_Click(object sender, RoutedEventArgs e)
@@ -121,6 +128,8 @@ namespace UserPanel.Views
             RootObject rootObject = (RootObject)ser.ReadObject(new MemoryStream(jsonData));
             return rootObject;
         }
+
+
 
     }
 

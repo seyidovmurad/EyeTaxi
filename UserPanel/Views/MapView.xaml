@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserPanel.Views"
-             xmlns:map="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+             xmlns:map="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF" xmlns:controls="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="White">
     <Grid>
@@ -33,6 +33,10 @@
 
             <Label Content="{Binding Distance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="37" Margin="0,50,0,0">
             </Label>
+
+            <controls:AutoCompleteBox Name="tb">
+            </controls:AutoCompleteBox>
+            
         </StackPanel>
 
         <map:Map x:Name="Map" ZoomLevel="12" Center="{Binding Centerr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MouseDoubleClick="Map_MouseDoubleClick" Grid.ColumnSpan="2" Margin="0,0,0,-0.4" Mode="AerialWithLabels">
