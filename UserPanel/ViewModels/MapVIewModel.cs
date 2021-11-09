@@ -4,6 +4,7 @@ using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Device.Location;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,12 +63,13 @@ namespace UserPanel.ViewModels
             if (1 < Locations.Count)
             {
                 Locations.Remove(Locations.Last());
+                Centerr = Locations.Last();
                 TaxiLocation = Locations.Last().Latitude + ", " + Locations.Last().Longitude;
             }
             else
             {
                 Timer.Stop();
-                System.Windows.MessageBox.Show("You reach your destination");
+                    System.Windows.MessageBox.Show("You reach your destination");
             }
         }
 
@@ -142,15 +144,28 @@ namespace UserPanel.ViewModels
         DispatcherTimer Timer;
 
 
-
         public void Apply()
         {
-            List<Driver> Drivers = JsonSaveService<List<Driver>>.Load(@"C:\Users\tnqar\Source\Repos\EyeTaxi\AdminPanel\bin\Debug\driver");
+            string[] dir = Directory.GetCurrentDirectory().Split('\\');
+            string path = "";
+            foreach (var item in dir)
+            {
+                if (item.ToLower() == "eyetaxi")
+                    break;
+                path += item + "\\";
+            }
+            List<Driver> Drivers = JsonSaveService<List<Driver>>.Load(path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
             List<Location> TaxiLocations = Drivers.Select(d => d.LastLocation).ToList();
 
 
-
-            TaxiLocation = FindTaxiService.TaxiLocation(new Location(double.Parse(From.Split(',')[0]), double.Parse(From.Split(',')[1])), TaxiLocations).ToString();
+            try
+            {
+                TaxiLocation = FindTaxiService.TaxiLocation(new Location(double.Parse(From.Split(',')[0]), double.Parse(From.Split(',')[1])), TaxiLocations).ToString();
+            }
+            catch (Exception ex) 
+            {
+                MessageBox.Show(ex.Message);
+            }
             if(TaxiLocation != null)
             {
                 Locations.Clear();
@@ -161,9 +176,5 @@ namespace UserPanel.ViewModels
                 Timer.Start();
             }
         }
-
-
     }
-
-
 }

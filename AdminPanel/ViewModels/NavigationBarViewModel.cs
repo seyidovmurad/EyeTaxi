@@ -1,4 +1,4 @@
-﻿using AdminPanel.Commads;
+﻿using AdminPanel.Commands;
 using AdminPanel.Stores;
 using System;
 using System.Collections.Generic;
@@ -26,8 +26,8 @@ namespace AdminPanel.ViewModels
         {
             _navigation = navigation;
             _navigation.SelectedViewModelChanged += OnSelectedViewChanged;
-            NavigateAddDriverCommand = new UpdateViewCommand<DriverEditViewModel>(navigation, () => new DriverEditViewModel());
-            NavigateDriverListCommand = new UpdateViewCommand<DriverListViewModel>(navigation, () => new DriverListViewModel());
+            NavigateAddDriverCommand = new UpdateViewCommand<DriverEditViewModel>(navigation, () => new DriverEditViewModel(navigation));
+            NavigateDriverListCommand = new UpdateViewCommand<DriverListViewModel>(navigation, () => new DriverListViewModel(navigation));
             NavigateDriverPricingCommand = new UpdateViewCommand<PricingViewModel>(navigation, () => new PricingViewModel());
         }
 
