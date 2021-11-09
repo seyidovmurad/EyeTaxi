@@ -1,4 +1,5 @@
-﻿using Microsoft.Maps.MapControl.WPF;
+﻿using AdminPanel.Models;
+using Microsoft.Maps.MapControl.WPF;
 using PropertyChanged;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using UserPanel.Commands;
 using UserPanel.Services;
 
@@ -18,18 +20,27 @@ namespace UserPanel.ViewModels
 
         public MapVIewModel()
         {
-            Centerr = new Microsoft.Maps.MapControl.WPF.Location();
-            PushPinLocations = new List<Microsoft.Maps.MapControl.WPF.Location>(3);
+            Centerr = new Location();
+            PushPinLocations = new List<Location>(3);
             Locations = new LocationCollection();
+
+            Timer = new DispatcherTimer();
+            Timer.Interval = new TimeSpan(0, 0, 1);
+            Timer.Tick += Timer_Tick;
+
+
 
             GoCommand = new RelayCommand(a =>
             {
                 Locations.Clear();
-                if(IsVisible == Visibility.Visible)
+                if (IsVisiblePin1 == Visibility.Visible)
                 {
                     Centerr = GetRouteService.GetRoute(FromLocation, ToLocation, Locations);
-                    From = Locations[0].ToString();
-                    To = Locations[Locations.Count - 1].ToString();
+                    if (Locations.Count != 0)
+                    {
+                        From = Locations[0].ToString();
+                        To = Locations[Locations.Count - 1].ToString();
+                    }
                 }
                 else
                 {
@@ -40,9 +51,25 @@ namespace UserPanel.ViewModels
                     GeoCoordinate ge = new GeoCoordinate(Locations[0].Latitude, Locations[0].Longitude);
                     Distance = (ge.GetDistanceTo(new GeoCoordinate(Locations[Locations.Count - 1].Latitude, Locations[Locations.Count - 1].Longitude)) / 1000).ToString();
                 }
-            });
+            },
+
+            b => !string.IsNullOrWhiteSpace(FromLocation) && !string.IsNullOrWhiteSpace(ToLocation));
+            ApplyCommand = new RelayCommand(a => Apply());
         }
 
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (1 < Locations.Count)
+            {
+                Locations.Remove(Locations.Last());
+                TaxiLocation = Locations.Last().Latitude + ", " + Locations.Last().Longitude;
+            }
+            else
+            {
+                Timer.Stop();
+                System.Windows.MessageBox.Show("You reach your destination");
+            }
+        }
 
         public string FromLocation { get; set; }
 
@@ -51,6 +78,8 @@ namespace UserPanel.ViewModels
 
 
         public RelayCommand GoCommand { get; set; }
+
+        public RelayCommand ApplyCommand { get; set; }
 
 
         public string From { get; set; }
@@ -75,9 +104,9 @@ namespace UserPanel.ViewModels
         }
 
 
-        private List<Microsoft.Maps.MapControl.WPF.Location> _pushPinLocations;
+        private List<Location> _pushPinLocations;
 
-        public List<Microsoft.Maps.MapControl.WPF.Location> PushPinLocations
+        public List<Location> PushPinLocations
         {
             get => _pushPinLocations;
             set
@@ -89,9 +118,9 @@ namespace UserPanel.ViewModels
 
 
 
-        private Microsoft.Maps.MapControl.WPF.Location _centerr;
+        private Location _centerr;
 
-        public Microsoft.Maps.MapControl.WPF.Location Centerr
+        public Location Centerr
         {
             get => _centerr;
             set
@@ -101,7 +130,37 @@ namespace UserPanel.ViewModels
             }
         }
 
-        public Visibility IsVisible { get; set; } = Visibility.Visible;
+        public Visibility IsVisiblePin1 { get; set; } = Visibility.Visible;
+
+        public Visibility IsVisiblePin2 { get; set; } = Visibility.Visible;
+
+        public string TaxiLocation { get; set; }
+
+        public Visibility TaxiVisible { get; set; } = Visibility.Hidden;
+
+
+        DispatcherTimer Timer;
+
+
+
+        public void Apply()
+        {
+            List<Driver> Drivers = JsonSaveService<List<Driver>>.Load(@"C:\Users\tnqar\Source\Repos\EyeTaxi\AdminPanel\bin\Debug\driver");
+            List<Location> TaxiLocations = Drivers.Select(d => d.LastLocation).ToList();
+
+
+
+            TaxiLocation = FindTaxiService.TaxiLocation(new Location(double.Parse(From.Split(',')[0]), double.Parse(From.Split(',')[1])), TaxiLocations).ToString();
+            if(TaxiLocation != null)
+            {
+                Locations.Clear();
+                GetRouteService.GetRoute(From, TaxiLocation, Locations);
+                TaxiVisible = Visibility.Visible;
+                IsVisiblePin2 = Visibility.Hidden;
+                
+                Timer.Start();
+            }
+        }
 
 
     }

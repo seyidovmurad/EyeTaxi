@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Device.Location;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -23,7 +24,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using UserPanel.Services;
-using static UserPanel.Services.ReverseGeocodingService;
+using static UserPanel.Services.GetAdressService;
 
 namespace UserPanel.Views
 {
@@ -36,17 +37,21 @@ namespace UserPanel.Views
 
         public ArrayList Pins { get; set; } = new ArrayList();
 
+        public AutoSuggestService Auto { get; set; } = new AutoSuggestService();
+
+
         public MapView()
         {
             InitializeComponent();
             Map.CredentialsProvider = new ApplicationIdCredentialsProvider(ConfigurationManager.AppSettings["MapKey"]);
 
-            tb.FilterMode = AutoCompleteFilterMode.Contains;
-
-            tb.ItemsSource = new string[] { "Azer", "Azer Qara" };
-
+            FromLocation.FilterMode = AutoCompleteFilterMode.Contains;
+            FromLocation.ItemsSource = new string[] { };
+            ToLocation.FilterMode = AutoCompleteFilterMode.Contains;
+            ToLocation.ItemsSource = new string[] { };
 
         }
+
 
         private void ChckBox_Click(object sender, RoutedEventArgs e)
         {
@@ -54,6 +59,7 @@ namespace UserPanel.Views
             {
                 FromLocation.IsEnabled = false;
                 ToLocation.IsEnabled = false;
+                Pin1.Visibility = Visibility.Visible;
                 Pin2.Visibility = Visibility.Hidden;
             }
             if (ChckBox.IsChecked == false)
@@ -61,6 +67,7 @@ namespace UserPanel.Views
                 FromLocation.IsEnabled = true;
                 ToLocation.IsEnabled = true;
                 Pin2.Visibility = Visibility.Visible;
+                Pin1.Visibility = Visibility.Visible;
                 Pin1.Location = default;
                 Pin2.Location = default;
 
@@ -72,8 +79,8 @@ namespace UserPanel.Views
             }
 
             Route.Locations.Clear();
-            FromLocation.Clear();
-            ToLocation.Clear();
+            FromLocation.Text = "";
+            ToLocation.Text = "";
             Help = false;
         }
 
@@ -98,8 +105,8 @@ namespace UserPanel.Views
                         Map.Children.Remove(item as Pushpin);
                     }
                     Pins.Clear();
-                    FromLocation.Clear();
-                    ToLocation.Clear();
+                    FromLocation.Text = "";
+                    ToLocation.Text = "";
 
                     //FromLocation.Text = pinLocation.ToString();
                     RootObject rootObject = getAddress(pinLocation.Latitude, pinLocation.Longitude);
@@ -119,22 +126,29 @@ namespace UserPanel.Views
             }
         }
 
-        public static RootObject getAddress(double lat, double lon)
+
+        private void FromLocation_TextChanged(object sender, RoutedEventArgs e)
         {
-            WebClient webClient = new WebClient();
-            webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
-            webClient.Headers.Add("Referer", "http://www.microsoft.com");
-            var jsonData = webClient.DownloadData("http://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lon);
-            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(RootObject));
-            RootObject rootObject = (RootObject)ser.ReadObject(new MemoryStream(jsonData));
-            return rootObject;
+            if (FromLocation.Text.Length > 2 && FromLocation.Text.Length < 10)
+                FromLocation.ItemsSource = Auto.GetResponse(FromLocation.Text, "40.409264,49.867092", "30000");
+            else if (FromLocation.Text.Length == 0)
+            {
+                FromLocation.ItemsSource = new string[] { };
+            }
         }
 
-
-
+        private void ToLocation_TextChanged(object sender, RoutedEventArgs e)
+        {
+            if (ToLocation.Text.Length > 2 && ToLocation.Text.Length < 10)
+                ToLocation.ItemsSource = Auto.GetResponse(ToLocation.Text, "40.409264,49.867092", "30000");
+            else if (ToLocation.Text.Length == 0)
+            {
+                ToLocation.ItemsSource = new string[] { };
+            }
+        }
     }
 
 
-    
+
 
 }

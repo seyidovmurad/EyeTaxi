@@ -34,7 +34,7 @@ namespace AdminPanel.ViewModels
                 Drivers = new ObservableCollection<Driver>();
             AddCommand = new RelayCommand(add =>
             {
-                Driver driver = new Driver(200, 3, "Murad ", "055", new Location(), new Car("a-aa", "bmw", "red", 200));
+                Driver driver = new Driver(200, 3, "Murad ", "055", new Location(40.38523977462492, 49.95334605094229), new Car("a-aa", "bmw", "red", 200));
                 Drivers.Add(driver);
                 JsonSaveService<ObservableCollection<Driver>>.Save(Drivers, "driver");
             });

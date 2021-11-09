@@ -30,8 +30,6 @@ namespace UserPanel.Views
             NavigationStore navigationStore = new NavigationStore();
             navigationStore.SelectedViewModel = new MapVIewModel();
 
-
-            var a = new AutoSuggestService();
             DataContext = new MainViewModel(navigationStore);
 
             //NavigationStore navigationStore = new NavigationStore();

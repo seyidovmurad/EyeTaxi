@@ -16,10 +16,10 @@
 
         <StackPanel Margin="10" Panel.ZIndex="1">
             <TextBlock FontSize="20" Text="From:" Foreground="White"/>
-            <TextBox Name="FromLocation" FontSize="16" Text="{Binding FromLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,-596,0"/>
+            <controls:AutoCompleteBox Name="FromLocation" FontSize="16" Text="{Binding FromLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextChanged="FromLocation_TextChanged"/>
 
             <TextBlock FontSize="20" Text="To:" Margin="0,20,0,0" Foreground="White"/>
-            <TextBox Name="ToLocation" FontSize="16" Text="{Binding ToLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,-596,0"/>
+            <controls:AutoCompleteBox Name="ToLocation" FontSize="16" Text="{Binding ToLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextChanged="ToLocation_TextChanged"/>
 
             <CheckBox Name="ChckBox" Content="Select locations on map" Checked="ChckBox_Click" Unchecked="ChckBox_Click"/>
 
@@ -30,22 +30,28 @@
                 Foreground="White" 
                 Background="CadetBlue"
                 Command="{Binding GoCommand}"/>
+            <Button 
+                Margin="0,10,0,0"
+                Content="Apply" 
+                FontSize="16" 
+                Foreground="White" 
+                Background="CadetBlue"
+                Command="{Binding ApplyCommand}"
+                />
 
             <Label Content="{Binding Distance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="37" Margin="0,50,0,0">
             </Label>
 
-            <controls:AutoCompleteBox Name="tb">
-            </controls:AutoCompleteBox>
-            
         </StackPanel>
 
-        <map:Map x:Name="Map" ZoomLevel="12" Center="{Binding Centerr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MouseDoubleClick="Map_MouseDoubleClick" Grid.ColumnSpan="2" Margin="0,0,0,-0.4" Mode="AerialWithLabels">
+        <map:Map x:Name="Map" ZoomLevel="12" Center="{Binding Centerr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MouseDoubleClick="Map_MouseDoubleClick" Grid.ColumnSpan="2" Margin="0,0,0,-0.4" Mode="Road">
 
 
             <map:MapItemsControl>
                 <map:MapPolyline Name="Route" Locations="{Binding Locations}" Stroke="Blue" StrokeThickness="5" />
-                <map:Pushpin Name="Pin1" Visibility="{Binding IsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding From, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                <map:Pushpin Name="Pin2" Visibility="{Binding IsVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding To, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <map:Pushpin Name="Pin1" Visibility="{Binding IsVisiblePin1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding From, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <map:Pushpin Name="Pin2" Visibility="{Binding IsVisiblePin2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding To, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <map:Pushpin Name="TaxiPin" Visibility="{Binding TaxiVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding TaxiLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                 <!--<map:Pushpin Location="{Binding PushPinLocations[0], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />-->
             </map:MapItemsControl>

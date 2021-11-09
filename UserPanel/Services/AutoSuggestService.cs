@@ -8,9 +8,8 @@ using System.Web.Script.Serialization;
 
 namespace UserPanel.Services
 {
-    class AutoSuggestService
+    public class AutoSuggestService
     {
-        private readonly string auto = "http://dev.virtualearth.net/REST/v1/Autosuggest?";
         //query=fish&
         //userLocation=47.668697,-122.376373,5
         //&userCircularMapView=47.668697,-122.376373,100
@@ -37,17 +36,19 @@ namespace UserPanel.Services
             return requestURI;
         }
 
-        public List<string> GetResponse(string query, string userLocation, string radius)
+        public string[] GetResponse(string query, string userLocation, string radius)
         {
             var client = new HttpClient();
             dynamic json = JsonConvert.DeserializeObject(client.GetAsync(Url(query, userLocation, radius, GetKey())).Result.Content.ReadAsStringAsync().Result);
 
             string v = JsonConvert.SerializeObject(json, Formatting.Indented);
             dynamic temp = JsonConvert.DeserializeObject(v);
-            List<string> address = new List<string>();
+            string[] address = new string[10];
+            int i = 0;
             foreach (dynamic item in temp.resourceSets[0].resources[0].value)
             {
-                address.Add(item.address.formattedAddress);
+                address[i] = item.address.formattedAddress;
+                i++;
             }
             return address;
         }

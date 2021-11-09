@@ -91,7 +91,7 @@
     <Compile Include="Services\FindTaxiService.cs" />
     <Compile Include="Services\GetRouteService.cs" />
     <Compile Include="Services\JsonSaveService.cs" />
-    <Compile Include="Services\ReverseGeocodingService.cs" />
+    <Compile Include="Services\GetAdressService.cs" />
     <Compile Include="Stores\NavigationStore.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
