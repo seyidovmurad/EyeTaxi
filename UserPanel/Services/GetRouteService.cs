@@ -44,7 +44,6 @@ namespace UserPanel.Services
         {
             Uri requestURI = new Uri(string.Format("http://dev.virtualearth.net/REST/V1/Routes/Driving?wp.0={0}&wp.1={1}&rpo=Points&key={2}", Uri.EscapeDataString(start), Uri.EscapeDataString(end), key));
             GetResponse(requestURI, callback);
-
         }
 
         public static void GetKey(Action<string> callback)

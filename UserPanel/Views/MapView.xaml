@@ -21,7 +21,7 @@
             <TextBlock FontSize="20" Text="To:" Margin="0,20,0,0" Foreground="White"/>
             <controls:AutoCompleteBox Name="ToLocation" FontSize="16" Text="{Binding ToLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextChanged="ToLocation_TextChanged"/>
 
-            <CheckBox Name="ChckBox" Content="Select locations on map" Checked="ChckBox_Click" Unchecked="ChckBox_Click"/>
+            <CheckBox Name="ChckBox" Content="Select locations on map" Checked="ChckBox_Click" Unchecked="ChckBox_Click" IsChecked="{Binding ChckBox, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
             <Button 
                 Margin="0,10,0,0"

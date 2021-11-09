@@ -59,25 +59,15 @@ namespace UserPanel.Views
             {
                 FromLocation.IsEnabled = false;
                 ToLocation.IsEnabled = false;
-                Pin1.Visibility = Visibility.Visible;
-                Pin2.Visibility = Visibility.Hidden;
             }
             if (ChckBox.IsChecked == false)
             {
                 FromLocation.IsEnabled = true;
                 ToLocation.IsEnabled = true;
-                Pin2.Visibility = Visibility.Visible;
-                Pin1.Visibility = Visibility.Visible;
-                Pin1.Location = default;
-                Pin2.Location = default;
-
-                foreach (var item in Pins)
-                {
-                    Map.Children.Remove(item as Pushpin);
-                }
-                Pins.Clear();
             }
 
+            Pin1.Location = default;
+            Pin2.Location = default;
             Route.Locations.Clear();
             FromLocation.Text = "";
             ToLocation.Text = "";
@@ -90,39 +80,28 @@ namespace UserPanel.Views
             if (ChckBox.IsChecked == true)
             {
                 e.Handled = true;
-
                 Point mousePosition = e.GetPosition(this);
                 Location pinLocation = Map.ViewportPointToLocation(mousePosition);
-
-                Pushpin pin = new Pushpin();
-                pin.Location = pinLocation;
+                RootObject rootObject = getAddress(pinLocation.Latitude, pinLocation.Longitude);
 
                 if (Help == false)
                 {
+                    Pin2.Location = default;
                     Route.Locations.Clear();
-                    foreach (var item in Pins)
-                    {
-                        Map.Children.Remove(item as Pushpin);
-                    }
-                    Pins.Clear();
                     FromLocation.Text = "";
                     ToLocation.Text = "";
 
-                    //FromLocation.Text = pinLocation.ToString();
-                    RootObject rootObject = getAddress(pinLocation.Latitude, pinLocation.Longitude);
                     FromLocation.Text = rootObject.display_name;
                     Pin1.Location = pinLocation;
                     Help = true;
                 }
                 else
                 {
-                    RootObject rootObject = getAddress(pinLocation.Latitude, pinLocation.Longitude);
                     ToLocation.Text = rootObject.display_name;
                     Pin2.Location = pinLocation;
                     Help = false;
                 }
-                Map.Children.Add(pin);
-                Pins.Add(pin);
+                Map.Center = pinLocation;
             }
         }
 
