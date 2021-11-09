@@ -7,6 +7,7 @@ using System.Device.Location;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -34,7 +35,7 @@ namespace UserPanel.ViewModels
             GoCommand = new RelayCommand(a =>
             {
                 Locations.Clear();
-                if (IsVisiblePin1 == Visibility.Visible)
+                if (ChckBox == false)
                 {
                     Centerr = GetRouteService.GetRoute(FromLocation, ToLocation, Locations);
                     if (Locations.Count != 0)
@@ -56,21 +57,6 @@ namespace UserPanel.ViewModels
 
             b => !string.IsNullOrWhiteSpace(FromLocation) && !string.IsNullOrWhiteSpace(ToLocation));
             ApplyCommand = new RelayCommand(a => Apply());
-        }
-
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            if (1 < Locations.Count)
-            {
-                Locations.Remove(Locations.Last());
-                Centerr = Locations.Last();
-                TaxiLocation = Locations.Last().Latitude + ", " + Locations.Last().Longitude;
-            }
-            else
-            {
-                Timer.Stop();
-                    System.Windows.MessageBox.Show("You reach your destination");
-            }
         }
 
         public string FromLocation { get; set; }
@@ -132,6 +118,10 @@ namespace UserPanel.ViewModels
             }
         }
 
+
+
+
+
         public Visibility IsVisiblePin1 { get; set; } = Visibility.Visible;
 
         public Visibility IsVisiblePin2 { get; set; } = Visibility.Visible;
@@ -140,9 +130,58 @@ namespace UserPanel.ViewModels
 
         public Visibility TaxiVisible { get; set; } = Visibility.Hidden;
 
+        public bool ChckBox { get; set; } = false;
 
         DispatcherTimer Timer;
 
+        bool Help = false;
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (Help == false)
+            {
+                if (1 < Locations.Count)
+                {
+                    Locations.Remove(Locations.Last());
+                    TaxiLocation = Locations.Last().Latitude + ", " + Locations.Last().Longitude;
+                    Centerr = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
+                }
+                else
+                {
+                    Timer.Stop();
+                    Help = true;
+                    System.Windows.MessageBox.Show("Taxi Arrived!!!");
+                    Locations.Clear();
+                    IsVisiblePin1 = Visibility.Hidden;
+                    IsVisiblePin2 = Visibility.Visible;
+
+                    GetRouteService.GetRoute(TaxiLocation, To, Locations);
+                    Timer.Start();
+                }
+            }
+            else
+            {
+                if (1 < Locations.Count)
+                {
+                    Locations.Remove(Locations.First());
+                    TaxiLocation = Locations.First().Latitude + ", " + Locations.First().Longitude;
+                    Centerr = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
+                }
+                else
+                {
+                    Timer.Stop();
+                    Help = false;
+                    System.Windows.MessageBox.Show("Taxi Arrived!!!");
+                    TaxiVisible = Visibility.Hidden;
+                    To = default;
+                    From = default;
+                    TaxiLocation = default;
+                    IsVisiblePin1 = Visibility.Visible;
+                    IsVisiblePin2 = Visibility.Visible;
+                    TaxiVisible = Visibility.Hidden;
+                }
+            }
+        }
 
         public void Apply()
         {
@@ -162,19 +201,25 @@ namespace UserPanel.ViewModels
             {
                 TaxiLocation = FindTaxiService.TaxiLocation(new Location(double.Parse(From.Split(',')[0]), double.Parse(From.Split(',')[1])), TaxiLocations).ToString();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            if(TaxiLocation != null)
+            if (TaxiLocation != null)
             {
                 Locations.Clear();
                 GetRouteService.GetRoute(From, TaxiLocation, Locations);
                 TaxiVisible = Visibility.Visible;
                 IsVisiblePin2 = Visibility.Hidden;
-                
+
                 Timer.Start();
             }
+            else
+            {
+                MessageBox.Show("Taxi is not found");
+                return;
+            }
+
         }
     }
 }
