@@ -188,7 +188,7 @@ namespace UserPanel.ViewModels
             List<Driver> Drivers = JsonSaveService<List<Driver>>.Load(@"C:\Users\tnqar\Source\Repos\EyeTaxi\AdminPanel\bin\Debug\driver");
             List<Location> TaxiLocations = Drivers.Select(d => d.LastLocation).ToList();
 
-
+            
             try
             {
                 TaxiLocation = FindTaxiService.TaxiLocation(new Location(double.Parse(From.Split(',')[0]), double.Parse(From.Split(',')[1])), TaxiLocations).ToString();
@@ -211,7 +211,6 @@ namespace UserPanel.ViewModels
                 MessageBox.Show("Taxi is not found");
                 return;
             }
-
         }
 
 
