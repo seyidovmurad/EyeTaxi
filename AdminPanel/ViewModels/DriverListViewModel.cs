@@ -1,5 +1,6 @@
-﻿using AdminPanel.Commads;
+﻿using AdminPanel.Commands;
 using AdminPanel.Models;
+using AdminPanel.Stores;
 using AdminPanel.Views;
 using Microsoft.Maps.MapControl.WPF;
 using System;
@@ -9,11 +10,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using UserPanel.Services;
 
 namespace AdminPanel.ViewModels
 {
-    class DriverListViewModel : BaseViewModel
+    public class DriverListViewModel : BaseViewModel
     {
         public ObservableCollection<Driver> Drivers { get; set; }
 
@@ -21,51 +23,74 @@ namespace AdminPanel.ViewModels
 
         public RelayCommand DeleteCommand { get; set; }
 
-        public RelayCommand AddCommand { get; set; }
+        public ICommand EditCommand { get; set; }
 
-        public RelayCommand EditCommand { get; set; }
+        public ICommand ShowCommand { get; set; }
 
-        public RelayCommand ShowCommand { get; set; }
+        private DriverStore DriverStore;
 
-        public DriverListViewModel()
+        private readonly NavigationStore _navigation;
+
+        public BaseViewModel SelectedViewModel { get; set; }
+
+        public DriverStore driverStore = new DriverStore();
+
+        public DriverListViewModel(NavigationStore navigation)
         {
             Drivers = JsonSaveService<ObservableCollection<Driver>>.Load("driver");
+            driverStore.DriverEdited += EditDriver;
+            driverStore.DriverAdded += AddDriver;
             if(Drivers == null)
                 Drivers = new ObservableCollection<Driver>();
-            AddCommand = new RelayCommand(add =>
-            {
-                Driver driver = new Driver(200, 3, "Murad ", "055", new Location(40.38523977462492, 49.95334605094229), new Car("a-aa", "bmw", "red", 200));
-                Drivers.Add(driver);
-                JsonSaveService<ObservableCollection<Driver>>.Save(Drivers, "driver");
-            });
-            EditCommand = new RelayCommand(edit =>
-            {
-                //EditDriver(SelectedDriver);
-            });
-            ShowCommand = new RelayCommand(show => { });
+            DriverStore = new DriverStore();
+            EditCommand = new UpdateViewCommand<DriverEditViewModel>(navigation, () => new DriverEditViewModel(navigation,driverStore) { Driver = SelectedDriver });
+            ShowCommand = new UpdateViewCommand<DriverMapViewModel>(navigation, () => new DriverMapViewModel(navigation) { Driver = SelectedDriver });
             DeleteCommand = new RelayCommand(delete => 
             {
                 Driver temp = SelectedDriver;
                 if (MessageBox.Show("Do you want to delete this driver?", "Deleting Driver", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
+                    foreach (var item in Drivers)
+                    {
+                        if (item.Id > temp.Id)
+                            item.Id--;
+                    }
                     Drivers.Remove(temp);
                     JsonSaveService<ObservableCollection<Driver>>.Save(Drivers, "driver");
                 }
             });
+            _navigation = navigation;
+            _navigation.SelectedViewModelChanged += OnSelectedViewChanged;
+        }
+
+
+        protected void OnSelectedViewChanged()
+        {
+            OnPropertChanged(nameof(SelectedViewModel));
         }
 
         private void EditDriver(Driver driver)
         {
-            //DriverEditViewModel model = new DriverEditViewModel();
-            //model.Driver = driver;
-            //DriverEditView editView = new DriverEditView(model);
-            ////if (editView.ShowDialog() == true)
-            ////{
-            //editView.ShowDialog();
-            //    if (!Drivers.Contains(driver))
-            //        Drivers.Add(model.Driver);
-            ////}
+            foreach (var item in Drivers)
+            {
+                if(item.Id == driver.Id)
+                {
+                    Drivers.Remove(item);
+                    Drivers.Add(driver);
+                    break;
+                }
+            }
+            JsonSaveService<ObservableCollection<Driver>>.Save(Drivers, "driver");
         }
 
+        private void AddDriver(Driver driver)
+        {
+            if (Drivers.Count > 0)
+                driver.Id = Drivers.Last().Id + 1;
+            else
+                driver.Id = 0;
+            Drivers.Add(driver);
+            JsonSaveService<ObservableCollection<Driver>>.Save(Drivers, "driver");
+        }
     }
 }

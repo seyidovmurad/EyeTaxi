@@ -6,35 +6,66 @@
              xmlns:local="clr-namespace:AdminPanel.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40"></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <Button Content="Add" HorizontalAlignment="Right" FontSize="20" Command="{Binding AddCommand}"/>
-        <ListBox Grid.Row="1" ItemsSource="{Binding Drivers}" SelectedItem="{Binding SelectedDriver}">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="IsSelected" Value="True"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding FullName}" FontSize="20"/>
-                        <Button Content="Edit" FontSize="20" Command="{Binding RelativeSource={RelativeSource
+    <UserControl.Resources>
+        <Style x:Key="WithBorderBtn" TargetType="Button">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#DF2E2E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Gadugi"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Padding" Value="10,0"/>
+        </Style>
+        <Style x:Key="Border" TargetType="Border">
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="BorderBrush" Value="#DF2E2E"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Margin" Value="10,2"/>
+        </Style>
+    </UserControl.Resources>
+    <ListBox HorizontalContentAlignment="Stretch" Grid.Row="1" ItemsSource="{Binding Drivers}" SelectedItem="{Binding SelectedDriver}">
+
+        <ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="IsSelected" Value="True"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ListBox.ItemContainerStyle>
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Grid Margin="5">
+                    <Grid.InputBindings>
+                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding RelativeSource={RelativeSource
+                                                                      FindAncestor, AncestorType={x:Type
+                                                                      ListBox}, AncestorLevel=1}, Path=DataContext.ShowCommand}"/>
+                    </Grid.InputBindings>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <DockPanel VerticalAlignment="Center">
+                        <StackPanel Margin="20,0" HorizontalAlignment="Left" Orientation="Horizontal">
+                            <TextBlock FontFamily="Gadugi" Text="{Binding Name}" FontSize="20" />
+                            <TextBlock FontFamily="Gadugi" Text="{Binding Surname}" FontSize="20"  />
+                        </StackPanel>
+                        <TextBlock FontFamily="Gadugi" Text="{Binding Car}" FontSize="20" HorizontalAlignment="Right" />
+                    </DockPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+                        <Border Style="{StaticResource Border}" BorderBrush="#6ECB63">
+                            <Button Background="#6ECB63" Style="{StaticResource WithBorderBtn}" Content="Edit" FontSize="20" Command="{Binding RelativeSource={RelativeSource
                                                                       FindAncestor, AncestorType={x:Type
                                                                       ListBox}, AncestorLevel=1}, Path=DataContext.EditCommand}"/>
-                        <Button Content="Delete" FontSize="20" Command="{Binding RelativeSource={RelativeSource
+                        </Border>
+                        <Border Style="{StaticResource Border}">
+                            <Button Style="{StaticResource WithBorderBtn}" Content="Remove" FontSize="20" Command="{Binding RelativeSource={RelativeSource
                                                                       FindAncestor, AncestorType={x:Type
                                                                       ListBox}, AncestorLevel=1}, Path=DataContext.DeleteCommand}"/>
+                        </Border>
                     </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </Grid>
+                </Grid>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
 </UserControl>

@@ -31,7 +31,11 @@ namespace UserPanel.Services
                     pLongitude /= radPerDeg;
                     foreach (var driver in drivers) 
                     {
-                        if (driver.Latitude > pLatidue && driver.Longitude > pLongitude)
+                        double carLat = Math.Abs(origin.Latitude - driver.Latitude);
+                        double carLong = Math.Abs(origin.Longitude - driver.Longitude);
+                        double circleLat = Math.Abs(origin.Latitude - pLatidue);
+                        double circleLong = Math.Abs(origin.Longitude - pLongitude);
+                        if (carLong < circleLong && carLat < circleLat)
                         {
                             return new Location(pLatidue, pLongitude);
                         }

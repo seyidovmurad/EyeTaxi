@@ -1,19 +1,24 @@
-﻿using Microsoft.Maps.MapControl.WPF;
+﻿using UserPanel.Services;
+using Microsoft.Maps.MapControl.WPF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AdminPanel.Services;
 
 namespace AdminPanel.Models
 {
     public class Driver
     {
+        public int Id { get; set; }
         public float Balance { get; set; }
 
         public float Rating { get; set; }
 
-        public string FullName { get; set; }
+        public string Name { get; set; }
+
+        public string Surname { get; set; }
 
         public string PhoneNumber { get; set; }
 
@@ -21,11 +26,12 @@ namespace AdminPanel.Models
 
         public Car Car { get; set; }
 
-        public Driver(float balance, float rating, string fullName, string phoneNumber, Location lastLocation, Car car)
+        public Driver(float balance, float rating, string name, string surname, string phoneNumber, Location lastLocation, Car car)
         {
             Balance = balance;
             Rating = rating;
-            FullName = fullName;
+            Name = name;
+            Surname = surname;
             PhoneNumber = phoneNumber;
             LastLocation = lastLocation;
             Car = car;
@@ -33,8 +39,20 @@ namespace AdminPanel.Models
 
         public Driver()
         {
-            LastLocation = new Location();
-            Car = new Car("a", "b", "c", 3);
+            LastLocation = DefaultDriverService.RandomLocation();
+            Car = new Car();
+            Rating = 5;
+
+        }
+
+        public bool isEmpty()
+        {
+            return string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Surname) && string.IsNullOrEmpty(PhoneNumber) && Car.IsEmpty();
+        }
+
+        public bool IsWhiteSpace()
+        {
+            return string.IsNullOrWhiteSpace(Name) && string.IsNullOrWhiteSpace(Surname) && string.IsNullOrWhiteSpace(PhoneNumber) && Car.IsWhiteSpace();
         }
     }
 }

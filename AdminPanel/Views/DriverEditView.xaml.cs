@@ -24,5 +24,26 @@ namespace AdminPanel.Views
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var child in a.Children)
+            {
+                foreach (var item in (child as StackPanel).Children)
+                {
+                    if (item is StackPanel)
+                    {
+                        foreach (var last in (item as StackPanel).Children)
+                        {
+                            if (last is TextBox txtb)
+                            {
+                                txtb.BorderBrush = Brushes.Red;
+                                
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

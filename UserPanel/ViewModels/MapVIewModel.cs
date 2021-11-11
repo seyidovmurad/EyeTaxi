@@ -4,6 +4,7 @@ using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Device.Location;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -182,10 +183,17 @@ namespace UserPanel.ViewModels
             }
         }
 
-
         public void Apply()
         {
-            List<Driver> Drivers = JsonSaveService<List<Driver>>.Load(@"C:\Users\tnqar\Source\Repos\EyeTaxi\AdminPanel\bin\Debug\driver");
+            string[] dir = Directory.GetCurrentDirectory().Split('\\');
+            string path = "";
+            foreach (var item in dir)
+            {
+                if (item.ToLower() == "eyetaxi")
+                    break;
+                path += item + "\\";
+            }
+            List<Driver> Drivers = JsonSaveService<List<Driver>>.Load(path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
             List<Location> TaxiLocations = Drivers.Select(d => d.LastLocation).ToList();
 
             
@@ -212,9 +220,5 @@ namespace UserPanel.ViewModels
                 return;
             }
         }
-
-
     }
-
-
 }

@@ -1,0 +1,87 @@
+﻿<UserControl x:Class="AdminPanel.Views.DriverMapView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AdminPanel.Views"
+             xmlns:map ="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" FontFamily="TimesNewRoman" FontSize="18">
+    <UserControl.Resources>
+        <Style x:Key="WithBorderBtn" TargetType="Button">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#6ECB63"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Gadugi"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Padding" Value="10,0"/>
+        </Style>
+        <Style x:Key="Border" TargetType="Border">
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="BorderBrush" Value="#6ECB63"/>
+            <Setter Property="CornerRadius" Value="5"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" >
+            <StackPanel>
+            <Border Style="{StaticResource Border}" Margin="10">
+                <Button Style="{StaticResource WithBorderBtn}" Content="Back To List" Command="{Binding BackCommand}"/> 
+            </Border>
+            <!--Driver-->
+            <TextBlock Text="Driver" FontWeight="Bold" FontSize="22" Margin="10,15,0,0"/>
+            <StackPanel Margin="10,5,0,0">
+                <TextBlock Text="Name:"  FontWeight="Bold"/>
+                <TextBlock Text="{Binding Driver.Name}"/>
+            </StackPanel>
+            <StackPanel  Margin="10,5,0,0">
+                <TextBlock Text="Surname:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Driver.Surname}"/>
+            </StackPanel>
+            <StackPanel Margin="10,5,0,0">
+                <TextBlock Text="Number:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Driver.Name}"/>
+            </StackPanel>
+            <StackPanel  Margin="10,5,0,0">
+                <TextBlock Text="Rating:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Driver.Rating}"/>
+            </StackPanel>
+            <StackPanel Margin="10,5,0,0">
+                <TextBlock Text="Balance:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Driver.Balance}"/>
+            </StackPanel>
+            
+            <!--Car-->
+            <TextBlock Text="Car" FontWeight="Bold" FontSize="22" Margin="10,5,0,0"/>
+            <StackPanel Margin="10,5,0,0">
+                <TextBlock Text="Vendor:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Driver.Car.Vendor}"/>
+            </StackPanel>
+            <StackPanel  Margin="10,5,0,0">
+                <TextBlock Text="Model:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Driver.Car.Model}"/>
+            </StackPanel>
+            <StackPanel Margin="10,5,0,0">
+                <TextBlock Text="Year:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Driver.Car.Year}"/>
+            </StackPanel>
+            <StackPanel  Margin="10,5,0,0">
+                <TextBlock Text="Color:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Driver.Car.Color}"/>
+            </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+        
+        
+        <map:Map ZoomLevel="12" Center="{Binding Driver.LastLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Mode="Road" Grid.Column="1" x:Name="Map">
+            <map:MapItemsControl>
+                <map:Pushpin Name="Pin1" Location="{Binding Driver.LastLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            </map:MapItemsControl>
+        </map:Map>
+    </Grid>
+</UserControl>

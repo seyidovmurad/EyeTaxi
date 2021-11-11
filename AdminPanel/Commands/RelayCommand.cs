@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace AdminPanel.Commads
+namespace AdminPanel.Commands
 {
     public class RelayCommand : ICommand
     {

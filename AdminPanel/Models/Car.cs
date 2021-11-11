@@ -14,14 +14,33 @@ namespace AdminPanel.Models
 
         public string Color { get; set; }
 
-        public int Year { get; set; }
+        public string Year { get; set; }
 
-        public Car(string model, string vendor, string color, int year)
+        public Car(string model, string vendor, string color, string year)
         {
             Model = model;
             Vendor = vendor;
             Color = color;
             Year = year;
+        }
+
+        public Car()
+        {
+        }
+        
+        public override string ToString()
+        {
+            return $"{Model} {Vendor}";
+        }
+
+        public bool IsEmpty()
+        {
+            return !(string.IsNullOrEmpty(Model) && string.IsNullOrEmpty(Vendor) && string.IsNullOrEmpty(Color) && string.IsNullOrEmpty(Year));
+        }
+
+        public bool IsWhiteSpace()
+        {
+            return !(string.IsNullOrWhiteSpace(Model) && string.IsNullOrWhiteSpace(Vendor) && string.IsNullOrWhiteSpace(Color) && string.IsNullOrWhiteSpace(Year));
         }
     }
 }

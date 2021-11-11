@@ -14,7 +14,7 @@ using System.Windows.Media;
 
 namespace UserPanel.Services
 {
-    class GetRouteService
+    public class GetRouteService
     {
         public static void GetResponse(Uri uri, Action<Response> callback)
         {

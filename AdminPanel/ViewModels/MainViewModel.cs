@@ -1,4 +1,4 @@
-﻿using AdminPanel.Commads;
+﻿using AdminPanel.Commands;
 using AdminPanel.Stores;
 using AdminPanel.Views;
 using System;

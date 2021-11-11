@@ -5,10 +5,55 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AdminPanel.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="800">
-    <StackPanel Orientation="Horizontal" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top">
-        <Button FontSize="20" Command="{Binding NavigateDriverPricingCommand}">Pricing</Button>
-        <Button FontSize="20" Command="{Binding NavigateDriverListCommand}">Drivers</Button>
-        <Button FontSize="20" Command="{Binding NavigateAddDriverCommand}">Add Driver</Button>
-    </StackPanel>
+             d:DesignHeight="50" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        
+        <Style x:Key="WithOutBorderBtn" TargetType="Button">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontFamily" Value="Gadugi"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Margin" Value="0,0,20,0"/>
+        </Style>
+        <Style x:Key="WithBorderBtn" TargetType="Button">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#6ECB63"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Gadugi"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Padding" Value="10,0"/>
+        </Style>
+        <Style x:Key="Border" TargetType="Border">
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="BorderBrush" Value="#6ECB63"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Margin" Value="0,0,20,0"/>
+        </Style>
+    </UserControl.Resources>
+    <Border BorderBrush="Gray" BorderThickness="0,0,0,1.4">
+        <Grid Background="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <!--Company Name-->
+            <TextBlock 
+                Text="Eye Taxi" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Center" 
+                Margin="40,0"
+                FontSize="20"
+                FontFamily="Gadugi" FontWeight="Bold"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button Command="{Binding NavigateDriverPricingCommand}" Style="{StaticResource WithOutBorderBtn}">Pricing</Button>
+                <Button Command="{Binding NavigateDriverListCommand}" Style="{StaticResource WithOutBorderBtn}">Drivers</Button>
+                <Border Style="{StaticResource Border}">
+                    <Button Command="{Binding NavigateAddDriverCommand}" Style="{StaticResource WithBorderBtn}">Add Driver</Button>
+                </Border>
+            </StackPanel>
+
+        </Grid>
+    </Border>
 </UserControl>

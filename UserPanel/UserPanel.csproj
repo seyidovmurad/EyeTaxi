@@ -88,6 +88,7 @@
     <Compile Include="Models\History.cs" />
     <Compile Include="Services\AutoSuggestService.cs" />
     <Compile Include="Services\BingMapsRESTService.cs" />
+    <Compile Include="Services\DefaultDriverService.cs" />
     <Compile Include="Services\FindTaxiService.cs" />
     <Compile Include="Services\GetRouteService.cs" />
     <Compile Include="Services\JsonSaveService.cs" />
