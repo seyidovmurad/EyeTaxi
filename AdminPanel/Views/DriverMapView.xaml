@@ -45,7 +45,7 @@
             </StackPanel>
             <StackPanel Margin="10,5,0,0">
                 <TextBlock Text="Number:" FontWeight="Bold"/>
-                <TextBlock Text="{Binding Driver.Name}"/>
+                    <TextBlock Text="{Binding Driver.PhoneNumber}"/>
             </StackPanel>
             <StackPanel  Margin="10,5,0,0">
                 <TextBlock Text="Rating:" FontWeight="Bold"/>
@@ -80,7 +80,7 @@
         
         <map:Map ZoomLevel="12" Center="{Binding Driver.LastLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Mode="Road" Grid.Column="1" x:Name="Map">
             <map:MapItemsControl>
-                <map:Pushpin Name="Pin1" Location="{Binding Driver.LastLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <map:Pushpin Name="Pin1" Location="{Binding LastLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             </map:MapItemsControl>
         </map:Map>
     </Grid>

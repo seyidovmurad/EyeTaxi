@@ -1,5 +1,6 @@
 ﻿using AdminPanel.Commands;
 using AdminPanel.Models;
+using AdminPanel.Services;
 using AdminPanel.Stores;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,7 @@ namespace AdminPanel.ViewModels
         public DriverEditViewModel(NavigationStore navigation)
         {
             Driver = new Driver();
+            Driver.LastLocation = RandomLocationService.RandomLocation();
             SaveCommand = new AddDriverCommand<DriverListViewModel>(new DriverListViewModel(navigation), Driver, navigation);
             CancelCommand = new UpdateViewCommand<DriverListViewModel>(navigation, () => new DriverListViewModel(navigation));
         }

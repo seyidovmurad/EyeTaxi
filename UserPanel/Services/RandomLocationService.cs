@@ -8,7 +8,7 @@ using UserPanel.Services;
 
 namespace AdminPanel.Services
 {
-    public class DefaultDriverService
+    public class RandomLocationService
     {
 
         public static Location RandomLocation()
@@ -18,7 +18,7 @@ namespace AdminPanel.Services
             var earthRadius = 6371; // in km
             var lat = origin.Latitude * radPerDeg;
             var lon = origin.Longitude * radPerDeg;
-            var AngDist = 30 / earthRadius;
+            var AngDist = 10f / earthRadius;
             Random random = new Random();
             int deg = random.Next(0, 360);
             double pLatidue, pLongitude;
@@ -28,11 +28,9 @@ namespace AdminPanel.Services
             pLatidue /= radPerDeg;
             pLongitude /= radPerDeg;
             LocationCollection locations = new LocationCollection();
-            Location to = new Location(pLatidue, pLongitude);
-            GetRouteService.GetRoute(origin.ToString(), to.ToString(), locations);
-            deg = random.Next(0, locations.Count);
-            return locations[deg];
-
+            GetRouteService.GetRoute("40.3791, 49.8468", $"{pLatidue}, {pLongitude}", locations);
+            deg = random.Next(0, locations.Count - 1);
+            return locations.ElementAt(deg);
         }
     }
 }

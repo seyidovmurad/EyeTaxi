@@ -48,7 +48,7 @@
                     <DockPanel VerticalAlignment="Center">
                         <StackPanel Margin="20,0" HorizontalAlignment="Left" Orientation="Horizontal">
                             <TextBlock FontFamily="Gadugi" Text="{Binding Name}" FontSize="20" />
-                            <TextBlock FontFamily="Gadugi" Text="{Binding Surname}" FontSize="20"  />
+                            <TextBlock Margin="5,0,0,0" FontFamily="Gadugi" Text="{Binding Surname}" FontSize="20"  />
                         </StackPanel>
                         <TextBlock FontFamily="Gadugi" Text="{Binding Car}" FontSize="20" HorizontalAlignment="Right" />
                     </DockPanel>

@@ -38,6 +38,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bogus, Version=33.1.1.0, Culture=neutral, PublicKeyToken=fa1bb3f3f218129a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bogus.33.1.1\lib\net40\Bogus.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetProjects.Input.Toolkit, Version=6.0.90.0, Culture=neutral, PublicKeyToken=79778c5f2eed289b, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetProjects.WpfToolkit.Input.6.0.90\lib\net40\DotNetProjects.Input.Toolkit.dll</HintPath>
     </Reference>
@@ -75,17 +78,18 @@
     <Compile Include="..\UserPanel\Services\BingMapsRESTService.cs">
       <Link>Services\BingMapsRESTService.cs</Link>
     </Compile>
-    <Compile Include="..\UserPanel\Services\DefaultDriverService.cs">
-      <Link>Services\DefaultDriverService.cs</Link>
-    </Compile>
     <Compile Include="..\UserPanel\Services\GetRouteService.cs">
       <Link>Services\GetRouteService.cs</Link>
     </Compile>
     <Compile Include="..\UserPanel\Services\JsonSaveService.cs">
       <Link>Services\JsonSaveService.cs</Link>
     </Compile>
+    <Compile Include="..\UserPanel\Services\RandomLocationService.cs">
+      <Link>Services\RandomLocationService.cs</Link>
+    </Compile>
     <Compile Include="Commands\AddDriverCommand.cs" />
     <Compile Include="Commands\EditDriverCommand.cs" />
+    <Compile Include="Services\FakeDriverService.cs" />
     <Compile Include="Services\INavigateService.cs" />
     <Compile Include="Stores\DriverStore.cs" />
     <Compile Include="Stores\NavigationStore.cs" />

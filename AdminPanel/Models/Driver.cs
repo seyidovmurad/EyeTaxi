@@ -39,7 +39,7 @@ namespace AdminPanel.Models
 
         public Driver()
         {
-            LastLocation = DefaultDriverService.RandomLocation();
+            LastLocation = new Location();
             Car = new Car();
             Rating = 5;
 
