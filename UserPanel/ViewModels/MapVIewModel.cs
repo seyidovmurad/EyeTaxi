@@ -30,8 +30,7 @@ namespace UserPanel.ViewModels
             Timer.Interval = new TimeSpan(0, 0, 1);
             Timer.Tick += Timer_Tick;
 
-
-
+            
             GoCommand = new RelayCommand(a =>
             {
                 Locations.Clear();
@@ -56,7 +55,9 @@ namespace UserPanel.ViewModels
             },
 
             b => !string.IsNullOrWhiteSpace(FromLocation) && !string.IsNullOrWhiteSpace(ToLocation));
-            ApplyCommand = new RelayCommand(a => Apply());
+
+
+            ApplyCommand = new RelayCommand(a => ApplyButton_Click());
         }
 
         public string FromLocation { get; set; }
@@ -74,7 +75,6 @@ namespace UserPanel.ViewModels
 
         public string To { get; set; }
 
-
         public string Distance { get; set; }
 
 
@@ -90,6 +90,7 @@ namespace UserPanel.ViewModels
                 OnPropertyChanged("Locations");
             }
         }
+
 
 
         private List<Location> _pushPinLocations;
@@ -118,10 +119,6 @@ namespace UserPanel.ViewModels
             }
         }
 
-
-
-
-
         public Visibility IsVisiblePin1 { get; set; } = Visibility.Visible;
 
         public Visibility IsVisiblePin2 { get; set; } = Visibility.Visible;
@@ -136,14 +133,20 @@ namespace UserPanel.ViewModels
 
         bool Help = false;
 
+        private Driver driver { get; set; }
+
+        private List<Driver> Drivers;
+
+
+
         private void Timer_Tick(object sender, EventArgs e)
         {
             if (Help == false)
             {
                 if (1 < Locations.Count)
                 {
-                    Locations.Remove(Locations.Last());
-                    TaxiLocation = Locations.Last().Latitude + ", " + Locations.Last().Longitude;
+                    Locations.Remove(Locations.First());
+                    TaxiLocation = Locations.First().Latitude + ", " + Locations.First().Longitude;
                     Centerr = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
                 }
                 else
@@ -159,6 +162,7 @@ namespace UserPanel.ViewModels
                     Timer.Start();
                 }
             }
+
             else
             {
                 if (1 < Locations.Count)
@@ -170,6 +174,22 @@ namespace UserPanel.ViewModels
                 else
                 {
                     Timer.Stop();
+
+
+                    Drivers.Find(d => d.Id == driver.Id).LastLocation = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
+                    string[] dir = Directory.GetCurrentDirectory().Split('\\');
+                    string path = "";
+                    foreach (var item in dir)
+                    {
+                        if (item.ToLower() == "eyetaxi")
+                            break;
+                        path += item + "\\";
+                    }
+                    JsonSaveService<List<Driver>>.Save(Drivers, path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
+
+
+
+
                     Help = false;
                     System.Windows.MessageBox.Show("Taxi Arrived!!!");
                     TaxiVisible = Visibility.Hidden;
@@ -183,7 +203,9 @@ namespace UserPanel.ViewModels
             }
         }
 
-        public void Apply()
+
+
+        public void ApplyButton_Click()
         {
             string[] dir = Directory.GetCurrentDirectory().Split('\\');
             string path = "";
@@ -193,22 +215,25 @@ namespace UserPanel.ViewModels
                     break;
                 path += item + "\\";
             }
-            List<Driver> Drivers = JsonSaveService<List<Driver>>.Load(path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
-            List<Location> TaxiLocations = Drivers.Select(d => d.LastLocation).ToList();
+            Drivers = JsonSaveService<List<Driver>>.Load(path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
 
-            
+
+
             try
             {
-                TaxiLocation = FindTaxiService.TaxiLocation(new Location(double.Parse(From.Split(',')[0]), double.Parse(From.Split(',')[1])), TaxiLocations).ToString();
+                driver = FindTaxiService.TaxiLocation(new Location(double.Parse(From.Split(',')[0]), double.Parse(From.Split(',')[1])), Drivers);
+                TaxiLocation = driver.LastLocation.Latitude + ", " + driver.LastLocation.Longitude;
+                MessageBox.Show(driver.Name + " " + driver.Surname);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+
             if (TaxiLocation != null)
             {
                 Locations.Clear();
-                GetRouteService.GetRoute(From, TaxiLocation, Locations);
+                GetRouteService.GetRoute(TaxiLocation, From, Locations);
                 TaxiVisible = Visibility.Visible;
                 IsVisiblePin2 = Visibility.Hidden;
 
@@ -220,5 +245,7 @@ namespace UserPanel.ViewModels
                 return;
             }
         }
+
+
     }
 }

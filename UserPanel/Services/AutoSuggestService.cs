@@ -49,6 +49,8 @@ namespace UserPanel.Services
             {
                 address[i] = item.address.formattedAddress;
                 i++;
+                if (i == 5)
+                    break;
             }
             return address;
         }

@@ -13,6 +13,7 @@ namespace AdminPanel.Services
 
         public static Location RandomLocation()
         {
+            a:
             Location origin = new Location(40.3791, 49.8468);
             var radPerDeg = Math.PI / 180;
             var earthRadius = 6371; // in km
@@ -28,7 +29,16 @@ namespace AdminPanel.Services
             pLatidue /= radPerDeg;
             pLongitude /= radPerDeg;
             LocationCollection locations = new LocationCollection();
-            GetRouteService.GetRoute("40.3791, 49.8468", $"{pLatidue}, {pLongitude}", locations);
+
+            try
+            {
+                GetRouteService.GetRoute("40.3791, 49.8468", $"{pLatidue}, {pLongitude}", locations);
+            }
+            catch (Exception)
+            {
+                goto a;
+            }
+
             deg = random.Next(0, locations.Count - 1);
             return locations.ElementAt(deg);
         }

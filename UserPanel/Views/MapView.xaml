@@ -7,6 +7,8 @@
              xmlns:map="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF" xmlns:controls="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="White">
+    
+    
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -47,11 +49,14 @@
         <map:Map x:Name="Map" ZoomLevel="12" Center="{Binding Centerr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MouseDoubleClick="Map_MouseDoubleClick" Grid.ColumnSpan="2" Margin="0,0,0,-0.4" Mode="Road">
 
 
+
             <map:MapItemsControl>
+
+
                 <map:MapPolyline Name="Route" Locations="{Binding Locations}" Stroke="Blue" StrokeThickness="5" />
                 <map:Pushpin Name="Pin1" Visibility="{Binding IsVisiblePin1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding From, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 <map:Pushpin Name="Pin2" Visibility="{Binding IsVisiblePin2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding To, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                <map:Pushpin Name="TaxiPin" Visibility="{Binding TaxiVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding TaxiLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                <map:Pushpin Name="TaxiPin" Visibility="{Binding TaxiVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding TaxiLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="Black"/>
 
                 <!--<map:Pushpin Location="{Binding PushPinLocations[0], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />-->
             </map:MapItemsControl>
