@@ -1,5 +1,6 @@
 ﻿using AdminPanel.Commands;
 using AdminPanel.Models;
+using AdminPanel.Services;
 using AdminPanel.Stores;
 using AdminPanel.Views;
 using Microsoft.Maps.MapControl.WPF;
@@ -38,13 +39,27 @@ namespace AdminPanel.ViewModels
         public DriverListViewModel(NavigationStore navigation)
         {
             Drivers = JsonSaveService<ObservableCollection<Driver>>.Load("driver");
-            driverStore.DriverEdited += EditDriver;
-            driverStore.DriverAdded += AddDriver;
             if(Drivers == null)
                 Drivers = new ObservableCollection<Driver>();
+            //if json file is empty make fake drivers
+            if(Drivers.Count == 0)
+            {
+                for (int i = 0; i < 20; i++)
+                {
+                    Driver driver = FakeDriverService.GenerateDriver();
+                    if (Drivers.Count == 0)
+                        driver.Id = 0;
+                    else
+                        driver.Id = Drivers.Last().Id + 1;
+                    Drivers.Add(driver);
+                }
+                JsonSaveService<ObservableCollection<Driver>>.Save(Drivers,"driver");
+            }
+            driverStore.DriverEdited += EditDriver;
+            driverStore.DriverAdded += AddDriver;
             DriverStore = new DriverStore();
             EditCommand = new UpdateViewCommand<DriverEditViewModel>(navigation, () => new DriverEditViewModel(navigation,driverStore) { Driver = SelectedDriver });
-            ShowCommand = new UpdateViewCommand<DriverMapViewModel>(navigation, () => new DriverMapViewModel(navigation) { Driver = SelectedDriver });
+            ShowCommand = new UpdateViewCommand<DriverMapViewModel>(navigation, () => new DriverMapViewModel(navigation) { Driver = SelectedDriver, LastLocation = SelectedDriver.LastLocation });
             DeleteCommand = new RelayCommand(delete => 
             {
                 Driver temp = SelectedDriver;
@@ -58,6 +73,7 @@ namespace AdminPanel.ViewModels
                     Drivers.Remove(temp);
                     JsonSaveService<ObservableCollection<Driver>>.Save(Drivers, "driver");
                 }
+
             });
             _navigation = navigation;
             _navigation.SelectedViewModelChanged += OnSelectedViewChanged;
