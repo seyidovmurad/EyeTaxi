@@ -59,8 +59,8 @@
 
 
         </StackPanel>
-
-        <StackPanel Margin="0,0,0,-0.4" Background="White" Visibility="{Binding StackVisibility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Panel.ZIndex="1">
+        <!--Visibility="{Binding StackVisibility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"-->
+        <StackPanel Margin="0,0,0,-0.4" Background="White" Visibility="Hidden"  Panel.ZIndex="1">
 
             <Label Content="Driver" FontSize="18" FontWeight="Bold" Foreground="Red"/>
             <Label Content="Name: " FontWeight="Bold"/>
@@ -84,8 +84,16 @@
                 FontSize="16" 
                 Foreground="White" 
                 Background="Black"
-                />
+                Command="{Binding CancelRideCommand}"/>
         </StackPanel>
+
+        <Button 
+                Margin="490,7,10,410.6"
+                Content="History" 
+                FontSize="16" 
+                Foreground="White" 
+                Background="Black"
+                Command="{Binding NavigateHistoryCommand}" Grid.Column="1" Panel.ZIndex="1"/>
 
         <map:Map x:Name="Map" ZoomLevel="12" Center="{Binding Centerr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MouseDoubleClick="Map_MouseDoubleClick" Grid.ColumnSpan="2" Margin="0,0,0,-0.4" Mode="Road">
 
@@ -95,8 +103,8 @@
 
 
                 <map:MapPolyline Name="Route" Locations="{Binding Locations}" Stroke="Blue" StrokeThickness="5" />
-                <map:Pushpin Name="Pin1" Visibility="{Binding IsVisiblePin1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding From, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="LightGreen"/>
                 <map:Pushpin Name="Pin2" Visibility="{Binding IsVisiblePin2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding To, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="LightBlue"/>
+                <map:Pushpin Name="Pin1" Visibility="{Binding IsVisiblePin1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding From, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="LightGreen"/>
                 <map:Pushpin Name="TaxiPin" Visibility="{Binding TaxiVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding TaxiLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="Black"/>
 
                 <!--<map:Pushpin Location="{Binding PushPinLocations[0], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />-->

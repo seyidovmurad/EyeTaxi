@@ -16,5 +16,8 @@
         <DataTemplate DataType="{x:Type viewmodels:MapVIewModel}">
             <views:MapView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:HistoryViewModel}">
+            <views:HistoryView/>
+        </DataTemplate>
     </Application.Resources>
 </Application>

@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using UserPanel.Commands;
+using UserPanel.Models;
 using UserPanel.Services;
 using UserPanel.Stores;
 
@@ -25,7 +26,7 @@ namespace UserPanel.ViewModels
 
         public MapVIewModel(NavigationStore NV)
         {
-            Centerr = new Location();
+            Centerr = new Location(40.409264, 49.867092);
             PushPinLocations = new List<Location>(3);
             Locations = new LocationCollection();
 
@@ -64,10 +65,14 @@ namespace UserPanel.ViewModels
 
             b => !string.IsNullOrWhiteSpace(FromLocation) && !string.IsNullOrWhiteSpace(ToLocation));
 
+            OrderTaxiCommand = new RelayCommand(a => ApplyButton_Click(), b => {
+                if (!string.IsNullOrWhiteSpace(Distance)) return true;
+                else return false;
+            });
 
-            OrderTaxiCommand = new RelayCommand(a => ApplyButton_Click());
             NavigateBackCommand = new UpdateViewCommand<RegisterViewModel>(NV, () => new RegisterViewModel(NV));
-            Centerr = new Location(40.409264, 49.867092);
+            CancelRideCommand = new RelayCommand(a => CancelRideButton_Click());
+            NavigateHistoryCommand = new UpdateViewCommand<HistoryViewModel>(NV, () => new HistoryViewModel(NV) { HistoryUsr = Usr});
         }
 
         public string FromLocation { get; set; }
@@ -81,6 +86,11 @@ namespace UserPanel.ViewModels
         public RelayCommand OrderTaxiCommand { get; set; }
 
         public ICommand NavigateBackCommand { get; set; }
+
+        public ICommand NavigateHistoryCommand { get; set; }
+
+
+        public RelayCommand CancelRideCommand { get; set; }
 
         public string From { get; set; }
 
@@ -146,7 +156,7 @@ namespace UserPanel.ViewModels
 
         bool Help = false;
 
-
+        bool PickedUp = false;
 
         private Driver _driver;
 
@@ -165,7 +175,9 @@ namespace UserPanel.ViewModels
 
         public Visibility StackVisibility { get; set; } = Visibility.Hidden;
 
+        public static User Usr { get; set; }
 
+        public static List<User> Users { get; set; }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -179,6 +191,7 @@ namespace UserPanel.ViewModels
                 }
                 else
                 {
+                    PickedUp = true;
                     Timer.Stop();
                     Help = true;
                     System.Windows.MessageBox.Show("Taxi Arrived!!!");
@@ -201,8 +214,20 @@ namespace UserPanel.ViewModels
                 }
                 else
                 {
-                    Timer.Stop();
 
+                    var history = new History(driver, FromLocation, ToLocation, 4.5f, Distance);
+                    Users.Find(u => u.Username == Usr.Username).Histories.Add(history);
+                    JsonSaveService<List<User>>.Save(Users, "Users");
+
+
+                    List<History> histories = new List<History>();
+                    histories = JsonSaveService<List<History>>.Load("histories");
+                    histories.Add(history);
+                    JsonSaveService<List<History>>.Save(histories, "histories");
+
+
+                    PickedUp = false;
+                    Timer.Stop();
 
                     Drivers.Find(d => d.Id == driver.Id).LastLocation = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
                     string[] dir = Directory.GetCurrentDirectory().Split('\\');
@@ -226,6 +251,10 @@ namespace UserPanel.ViewModels
                     IsVisiblePin2 = Visibility.Visible;
                     TaxiVisible = Visibility.Hidden;
                     StackVisibility = Visibility.Hidden;
+                    ToLocation = "";
+                    FromLocation = "";
+                    Distance = "";
+
                 }
             }
         }
@@ -234,8 +263,6 @@ namespace UserPanel.ViewModels
 
         public void ApplyButton_Click()
         {
-
-            StackVisibility = Visibility.Visible;
             string[] dir = Directory.GetCurrentDirectory().Split('\\');
             string path = "";
             foreach (var item in dir)
@@ -261,6 +288,7 @@ namespace UserPanel.ViewModels
 
             if (TaxiLocation != null)
             {
+                StackVisibility = Visibility.Visible;
                 Locations.Clear();
                 GetRouteService.GetRoute(TaxiLocation, From, Locations);
                 TaxiVisible = Visibility.Visible;
@@ -276,5 +304,37 @@ namespace UserPanel.ViewModels
         }
 
 
+        public void CancelRideButton_Click()
+        {
+            PickedUp = false;
+            Timer.Stop();
+
+
+            Drivers.Find(d => d.Id == driver.Id).LastLocation = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
+            string[] dir = Directory.GetCurrentDirectory().Split('\\');
+            string path = "";
+            foreach (var item in dir)
+            {
+                if (item.ToLower() == "eyetaxi")
+                    break;
+                path += item + "\\";
+            }
+            JsonSaveService<List<Driver>>.Save(Drivers, path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
+
+
+            Help = false;
+            System.Windows.MessageBox.Show("You have cancelled the ride!!!");
+            TaxiVisible = Visibility.Hidden;
+            To = default;
+            From = default;
+            TaxiLocation = default;
+            IsVisiblePin1 = Visibility.Visible;
+            IsVisiblePin2 = Visibility.Visible;
+            TaxiVisible = Visibility.Hidden;
+            StackVisibility = Visibility.Hidden;
+            ToLocation = "";
+            FromLocation = "";
+            Distance = "";
+        }
     }
 }

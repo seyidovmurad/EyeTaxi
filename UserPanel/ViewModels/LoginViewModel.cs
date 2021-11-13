@@ -52,6 +52,8 @@ namespace UserPanel.ViewModels
                     if (usr.Password == Password)
                     {
                         MessageBox.Show("You have entered successfully");
+                        MapVIewModel.Usr = usr;
+                        MapVIewModel.Users = Users;
                         NavigateMapCommand.Execute(obj);
                     }
                     else

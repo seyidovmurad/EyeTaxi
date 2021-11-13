@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="UserPanel.Views.HistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UserPanel.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Background="White">
+    <Canvas Margin="0,0,0,-0.4">
+        <Button
+                Content="Back" 
+                FontSize="16" 
+                Foreground="White" 
+                Background="Black"
+                Canvas.Left="702" Canvas.Top="10" Width="88" Height="35"
+                Command="{Binding NavigateBackCommand}"/>
+
+        <ListBox Height="395" Width="800" Canvas.Top="55" ItemsSource="{Binding HistoryUsr.Histories}" Name="List">
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="IsSelected" Value="True"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="{Binding StartPoint}"/>
+                        <Label Content="  --  "/>
+                        <Label Content="{Binding EndPoint}"/>
+                        <Label Content="Date: " Margin="50,0,0,0"/>
+                        <Label Content="{Binding TravelDate}"/>
+
+                        <Button Content="Show Info" FontSize="16"  Foreground="White"  Background="Black" Canvas.Left="702" Canvas.Top="10" Width="88" Height="35"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            
+        </ListBox>
+
+    </Canvas>
+
+
+</UserControl>

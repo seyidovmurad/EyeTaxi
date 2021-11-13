@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace UserPanel.Models
 {
-    class History
+    public class History
     {
 
         public Driver Driver { get; set; }
@@ -18,21 +18,19 @@ namespace UserPanel.Models
 
         public string EndPoint { get; set; }
 
-        public string TravelDuration { get; set; }
-
         public float Price { get; set; }
 
-        public float Distance { get; set; } //with km
+        public string Distance { get; set; } //with km
 
-        public History(Driver driver, string startPoint, string endPoint, string travelDuration, float price, float distance)
+        public History(Driver driver, string startPoint, string endPoint, float price, string distance)
         {
             TravelDate = DateTime.Now.ToLongDateString();
             Driver = driver;
             StartPoint = startPoint;
             EndPoint = endPoint;
-            TravelDuration = travelDuration;
             Price = price;
             Distance = distance;
         }
+
     }
 }

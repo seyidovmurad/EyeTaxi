@@ -12,13 +12,14 @@ namespace UserPanel.Models
         {
             Username = username;
             Password = password;
+            Histories = new List<History>();
         }
 
         public string Username { get; set; }
 
         public string Password { get; set; }
 
-
+        public List<History> Histories { get; set; }
 
     }
 }
