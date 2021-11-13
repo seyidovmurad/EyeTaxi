@@ -6,6 +6,66 @@
              xmlns:views="clr-namespace:AdminPanel.Views"
              xmlns:viewmodels="clr-namespace:AdminPanel.ViewModels">
     <Application.Resources>
+        <Style TargetType="Button" x:Key="WithBorderBtn">
+            <Setter Property="Background" Value="#6ECB63"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="Gadugi"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                BorderThickness="1"
+                                Padding="14,2"
+                                BorderBrush="#6ECB63">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#9AE66E"/>
+                    <Setter Property="Foreground" Value="#fff"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#B4FE98"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Button" x:Key="WithOutBorderBtn">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontFamily" Value="Gadugi"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Margin" Value="0,0,20,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                BorderThickness="1"
+                                BorderBrush="#fff">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <DataTemplate DataType="{x:Type viewmodels:PricingViewModel}">
             <views:PricingView/>
         </DataTemplate>
@@ -22,4 +82,6 @@
             <views:DriverMapView/>
         </DataTemplate>
     </Application.Resources>
+    
+    
 </Application>

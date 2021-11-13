@@ -89,6 +89,7 @@
     </Compile>
     <Compile Include="Commands\AddDriverCommand.cs" />
     <Compile Include="Commands\EditDriverCommand.cs" />
+    <Compile Include="Models\Pricing.cs" />
     <Compile Include="Services\FakeDriverService.cs" />
     <Compile Include="Services\INavigateService.cs" />
     <Compile Include="Stores\DriverStore.cs" />

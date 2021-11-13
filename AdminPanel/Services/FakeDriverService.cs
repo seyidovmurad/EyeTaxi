@@ -25,6 +25,7 @@ namespace AdminPanel.Services
                 .RuleFor(d => d.Rating, f => f.Random.Number(2, 5));
             var driver = driverFaker.Generate();
             driver.Car = GenerateCar();
+            driver.Car.Color = "Black";
             driver.LastLocation = RandomLocationService.RandomLocation();
             return driver;
         }

@@ -13,7 +13,7 @@ namespace AdminPanel.Services
 
         public static Location RandomLocation()
         {
-            a:
+            start:
             Location origin = new Location(40.3791, 49.8468);
             var radPerDeg = Math.PI / 180;
             var earthRadius = 6371; // in km
@@ -36,7 +36,8 @@ namespace AdminPanel.Services
             }
             catch (Exception)
             {
-                goto a;
+                ;
+                goto start;
             }
 
             deg = random.Next(0, locations.Count - 1);
