@@ -10,9 +10,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Threading;
 using UserPanel.Commands;
 using UserPanel.Services;
+using UserPanel.Stores;
 
 namespace UserPanel.ViewModels
 {
@@ -20,7 +22,8 @@ namespace UserPanel.ViewModels
     class MapVIewModel : BaseViewModel
     {
 
-        public MapVIewModel()
+
+        public MapVIewModel(NavigationStore NV)
         {
             Centerr = new Location();
             PushPinLocations = new List<Location>(3);
@@ -47,17 +50,24 @@ namespace UserPanel.ViewModels
                 {
                     Centerr = GetRouteService.GetRoute(From, To, Locations);
                 }
+
+
+
                 if (Locations.Count > 0)
                 {
                     GeoCoordinate ge = new GeoCoordinate(Locations[0].Latitude, Locations[0].Longitude);
                     Distance = (ge.GetDistanceTo(new GeoCoordinate(Locations[Locations.Count - 1].Latitude, Locations[Locations.Count - 1].Longitude)) / 1000).ToString();
+                    float dist = float.Parse(Distance);
+                    Distance = dist + "  km";
                 }
             },
 
             b => !string.IsNullOrWhiteSpace(FromLocation) && !string.IsNullOrWhiteSpace(ToLocation));
 
 
-            ApplyCommand = new RelayCommand(a => ApplyButton_Click());
+            OrderTaxiCommand = new RelayCommand(a => ApplyButton_Click());
+            NavigateBackCommand = new UpdateViewCommand<RegisterViewModel>(NV, () => new RegisterViewModel(NV));
+            Centerr = new Location(40.409264, 49.867092);
         }
 
         public string FromLocation { get; set; }
@@ -68,8 +78,9 @@ namespace UserPanel.ViewModels
 
         public RelayCommand GoCommand { get; set; }
 
-        public RelayCommand ApplyCommand { get; set; }
+        public RelayCommand OrderTaxiCommand { get; set; }
 
+        public ICommand NavigateBackCommand { get; set; }
 
         public string From { get; set; }
 
@@ -129,13 +140,30 @@ namespace UserPanel.ViewModels
 
         public bool ChckBox { get; set; } = false;
 
+
+
         DispatcherTimer Timer;
 
         bool Help = false;
 
-        private Driver driver { get; set; }
+
+
+        private Driver _driver;
+
+        public Driver driver
+        {
+            get => _driver;
+            set
+            {
+                _driver = value;
+                OnPropertyChanged("driver");
+            }
+        }
+
 
         private List<Driver> Drivers;
+
+        public Visibility StackVisibility { get; set; } = Visibility.Hidden;
 
 
 
@@ -188,8 +216,6 @@ namespace UserPanel.ViewModels
                     JsonSaveService<List<Driver>>.Save(Drivers, path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
 
 
-
-
                     Help = false;
                     System.Windows.MessageBox.Show("Taxi Arrived!!!");
                     TaxiVisible = Visibility.Hidden;
@@ -199,6 +225,7 @@ namespace UserPanel.ViewModels
                     IsVisiblePin1 = Visibility.Visible;
                     IsVisiblePin2 = Visibility.Visible;
                     TaxiVisible = Visibility.Hidden;
+                    StackVisibility = Visibility.Hidden;
                 }
             }
         }
@@ -207,6 +234,8 @@ namespace UserPanel.ViewModels
 
         public void ApplyButton_Click()
         {
+
+            StackVisibility = Visibility.Visible;
             string[] dir = Directory.GetCurrentDirectory().Split('\\');
             string path = "";
             foreach (var item in dir)
