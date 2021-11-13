@@ -36,6 +36,7 @@ namespace UserPanel.Views
             //navigationStore.SelectedViewModel = new RegisterViewModel(navigationStore);
 
             //DataContext = new MainViewModel(navigationStore);
+            
         }
     }
 }
