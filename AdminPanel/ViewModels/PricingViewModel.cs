@@ -20,7 +20,18 @@ namespace AdminPanel.ViewModels
             set
             {
                 _pricing = value;
-                OnPropertChanged("PricingAll");
+                OnPropertChanged("Pricing");
+            }
+        }
+
+        private Statistic _statistic;
+        public Statistic Statistic
+        {
+            get => _statistic;
+            set
+            {
+                _statistic = value;
+                OnPropertChanged("Statistic");
             }
         }
 
@@ -30,26 +41,37 @@ namespace AdminPanel.ViewModels
 
         public PricingViewModel()
         {
+            Statistic = JsonSaveService<Statistic>.Load("statistic");
+
             Pricing = JsonSaveService<Pricing>.Load("pricing");
+
+            if(Statistic == null)
+                Statistic = new Statistic();
+
             if(Pricing == null)
             {
                 Pricing = new Pricing();
                 JsonSaveService<Pricing>.Save(Pricing, "pricing");
             }
+
+
             ChangePricingCommand = new RelayCommand(a =>
             {
                 JsonSaveService<Pricing>.Save(Pricing, "pricing");
             });
+
+
             GetInterestCommand = new RelayCommand(a =>
             {
-                Pricing.DailyIncome = Pricing.DailyIncome - Pricing.Interest;
-                Pricing.LastWithDraw = DateTime.Now;
-                JsonSaveService<Pricing>.Save(Pricing, "pricing");
+                Statistic.Interest = "0";
+                Statistic.IncomeAfterLWD = 0;
+                JsonSaveService<Statistic>.Save(Statistic, "statistic");
+
             },
             p =>
             {
 
-                if (DateTime.Now.Day > Pricing.LastWithDraw.Day)
+                if (Statistic.IncomeAfterLWD > 0)
                     return true;
                 return false;
             });

@@ -85,6 +85,15 @@
     <Compile Include="..\AdminPanel\Models\Driver.cs">
       <Link>Models\Driver.cs</Link>
     </Compile>
+    <Compile Include="..\AdminPanel\Models\Pricing.cs">
+      <Link>Models\Pricing.cs</Link>
+    </Compile>
+    <Compile Include="..\AdminPanel\Models\Statistic.cs">
+      <Link>Models\Statistic.cs</Link>
+    </Compile>
+    <Compile Include="..\AdminPanel\Services\CreateStatisticService.cs">
+      <Link>Services\CreateStatisticService.cs</Link>
+    </Compile>
     <Compile Include="Models\CustomTextBox.xaml.cs">
       <DependentUpon>CustomTextBox.xaml</DependentUpon>
     </Compile>

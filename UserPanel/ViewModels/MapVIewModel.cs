@@ -1,4 +1,5 @@
 ﻿using AdminPanel.Models;
+using AdminPanel.Services;
 using Microsoft.Maps.MapControl.WPF;
 using PropertyChanged;
 using System;
@@ -34,7 +35,23 @@ namespace UserPanel.ViewModels
             Timer.Interval = new TimeSpan(0, 0, 1);
             Timer.Tick += Timer_Tick;
 
-            
+            string[] dir = Directory.GetCurrentDirectory().Split('\\');
+            string path = "";
+            foreach (var item in dir)
+            {
+                if (item.ToLower() == "eyetaxi")
+                    break;
+                path += item + "\\";
+            }
+
+
+            Pricing price = JsonSaveService<Pricing>.Load(path + @"\EyeTaxi\AdminPanel\bin\Debug\pricing");
+            if (price == null)
+                price = new Pricing();
+
+            PricePerKm = price.PricePerKm;
+             
+
             GoCommand = new RelayCommand(a =>
             {
                 Locations.Clear();
@@ -59,7 +76,10 @@ namespace UserPanel.ViewModels
                     GeoCoordinate ge = new GeoCoordinate(Locations[0].Latitude, Locations[0].Longitude);
                     Distance = (ge.GetDistanceTo(new GeoCoordinate(Locations[Locations.Count - 1].Latitude, Locations[Locations.Count - 1].Longitude)) / 1000).ToString();
                     float dist = float.Parse(Distance);
-                    Distance = dist + "  km";
+                    Distance = dist.ToString("0.##") + "  km";
+                    Price = (dist * PricePerKm).ToString("0.##");
+                    if (float.Parse(Price) < 1.6f)
+                        Price = "1.6";
                 }
             },
 
@@ -98,7 +118,9 @@ namespace UserPanel.ViewModels
 
         public string Distance { get; set; }
 
+        public string Price { get; set; }
 
+        private float PricePerKm;
 
         private LocationCollection _locations;
 
@@ -214,22 +236,6 @@ namespace UserPanel.ViewModels
                 }
                 else
                 {
-
-                    var history = new History(driver, FromLocation, ToLocation, 4.5f, Distance);
-                    Users.Find(u => u.Username == Usr.Username).Histories.Add(history);
-                    JsonSaveService<List<User>>.Save(Users, "Users");
-
-
-                    List<History> histories = new List<History>();
-                    histories = JsonSaveService<List<History>>.Load("histories");
-                    histories.Add(history);
-                    JsonSaveService<List<History>>.Save(histories, "histories");
-
-
-                    PickedUp = false;
-                    Timer.Stop();
-
-                    Drivers.Find(d => d.Id == driver.Id).LastLocation = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
                     string[] dir = Directory.GetCurrentDirectory().Split('\\');
                     string path = "";
                     foreach (var item in dir)
@@ -238,6 +244,17 @@ namespace UserPanel.ViewModels
                             break;
                         path += item + "\\";
                     }
+
+                    var history = new History(driver, FromLocation, ToLocation, float.Parse(Price), Distance);
+                    Users.Find(u => u.Username == Usr.Username).Histories.Add(history);
+                    JsonSaveService<List<User>>.Save(Users, "Users");
+
+                    CreateStatisticService.SetStatistic(float.Parse(Price));
+                    PickedUp = false;
+                    Timer.Stop();
+
+                    Drivers.Find(d => d.Id == driver.Id).LastLocation = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
+                    Drivers.Find(d => d.Id == driver.Id).Balance += float.Parse(Price);
                     JsonSaveService<List<Driver>>.Save(Drivers, path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
 
 

@@ -28,7 +28,7 @@ namespace UserPanel.Views
             InitializeComponent();
 
             NavigationStore navigationStore = new NavigationStore();
-            navigationStore.SelectedViewModel = new RegisterViewModel(navigationStore);
+            navigationStore.SelectedViewModel = new LoginViewModel(navigationStore);
 
             DataContext = new MainViewModel(navigationStore);
 
