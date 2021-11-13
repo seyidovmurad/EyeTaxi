@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UserPanel.Views"
         mc:Ignorable="d"
-        Title="MainView" Height="450" Width="800">
+        Title="MainView" Height="470" Width="793.6" MaxWidth="793.6" MinWidth="793.6" MinHeight="470" MaxHeight="470">
 
     <Grid>
 
-        <ContentControl Content="{Binding SelectedViewModel}"/>
+        <ContentControl Content="{Binding SelectedViewModel}" Height="470" Width="793.6" MaxWidth="793.6" MinWidth="793.6" MinHeight="470" MaxHeight="470"/>
 
     </Grid>
 

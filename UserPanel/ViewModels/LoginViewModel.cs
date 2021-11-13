@@ -34,7 +34,7 @@ namespace UserPanel.ViewModels
         public LoginViewModel(NavigationStore NV)
         {
             NavigateRegisterCommand = new UpdateViewCommand<RegisterViewModel>(NV, () => new RegisterViewModel(NV));
-            NavigateMapCommand = new UpdateViewCommand<MapVIewModel>(NV, () => new MapVIewModel());
+            NavigateMapCommand = new UpdateViewCommand<MapVIewModel>(NV, () => new MapVIewModel(NV));
             LoginCommand = new RelayCommand(Login);
             Users = JsonSaveService<List<User>>.Load("Users");
             if (Users == null)

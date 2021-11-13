@@ -3,31 +3,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:UserPanel.Views"
+             xmlns:local="clr-namespace:UserPanel.Views" xmlns:custom="clr-namespace:UserPanel.Models"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="White">
-    <StackPanel>
-        <Label Content="Username" Margin="0,50,0,0" />
-        <TextBox Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <TextBox.Background>
-                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlLightColorKey}}"/>
-            </TextBox.Background>
-        </TextBox>
-        <Label Content="Password" />
-        <TextBox Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <TextBox.Background>
-                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlLightColorKey}}"/>
-            </TextBox.Background>
-        </TextBox>
-        <Label Content="Confirm Password" />
-        <TextBox Text="{Binding ConfirmPass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <TextBox.Background>
-                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlLightColorKey}}"/>
-            </TextBox.Background>
-        </TextBox>
 
-        <Button Height="33" Width="200" Margin="0,30,0,0" Content="Register" Command="{Binding RegisterCommand}"/>
-        <Button Height="33" Width="200" Margin="0,30,0,0" Content="I already have an accaunt" Command="{Binding NavigateLoginCommand}" CommandParameter="Login"/>
-    </StackPanel>
+
+
+
+    <Canvas>
+        <Label Content="Username" Canvas.Left="179" Canvas.Top="100" FontWeight="Bold" />
+        <TextBox Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Canvas.Left="179" Canvas.Top="126" Width="462"  BorderBrush="Black" BorderThickness="2" Height="40" FontSize="18"/>
+
+        <Label Content="Password" Canvas.Left="179" Canvas.Top="171" FontWeight="Bold" />
+        <TextBox Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Canvas.Left="179" Canvas.Top="197" Width="462" BorderBrush="Black" BorderThickness="2" Height="40" FontSize="18"/>
+
+        <Label Content="Confirm Password" Canvas.Left="179" Canvas.Top="237" FontWeight="Bold" />
+        <TextBox Text="{Binding ConfirmPass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Canvas.Left="179" Canvas.Top="263" Width="462" BorderBrush="Black" BorderThickness="2" Height="40" FontSize="18"/>
+
+        <Button Height="69" Width="462" Content="Sign Up" Command="{Binding RegisterCommand}" Canvas.Left="179" Canvas.Top="312" Foreground="White" Background="Black" FontWeight="Bold" FontSize="24"/>
+        <Button Height="33" Width="200" Content="I already have an accaunt" Command="{Binding NavigateLoginCommand}" CommandParameter="Login" Canvas.Left="441" Canvas.Top="386" Foreground="White" Background="Black" FontWeight="Bold"/>
+
+
+        <Label Content="Name" Canvas.Left="179" Canvas.Top="29" FontWeight="Bold" />
+        <TextBox BorderBrush="Black" BorderThickness="2" Height="40" Width="216" Canvas.Left="179" Canvas.Top="55" FontSize="18" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Label Content="Surname" Canvas.Left="424" Canvas.Top="29" FontWeight="Bold" />
+        <TextBox BorderBrush="Black" BorderThickness="2" Height="40" Width="217" Canvas.Left="424" Canvas.Top="55" FontSize="18" Text="{Binding Surname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+    </Canvas>
 
 </UserControl>

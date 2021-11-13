@@ -23,7 +23,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using UserPanel.Commands;
 using UserPanel.Services;
+using UserPanel.Stores;
+using UserPanel.ViewModels;
 using static UserPanel.Services.GetAdressService;
 
 namespace UserPanel.Views
@@ -49,7 +52,6 @@ namespace UserPanel.Views
             FromLocation.ItemsSource = new string[] { };
             ToLocation.FilterMode = AutoCompleteFilterMode.Contains;
             ToLocation.ItemsSource = new string[] { };
-
         }
 
 
@@ -66,6 +68,7 @@ namespace UserPanel.Views
                 ToLocation.IsEnabled = true;
             }
 
+            Distance.Content = "";
             Pin1.Location = default;
             Pin2.Location = default;
             Route.Locations.Clear();
@@ -90,6 +93,7 @@ namespace UserPanel.Views
                     Route.Locations.Clear();
                     FromLocation.Text = "";
                     ToLocation.Text = "";
+                    Distance.Content = "";
 
                     FromLocation.Text = rootObject.display_name;
                     Pin1.Location = pinLocation;

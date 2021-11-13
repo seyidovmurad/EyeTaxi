@@ -85,6 +85,9 @@
     <Compile Include="..\AdminPanel\Models\Driver.cs">
       <Link>Models\Driver.cs</Link>
     </Compile>
+    <Compile Include="Models\CustomTextBox.xaml.cs">
+      <DependentUpon>CustomTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\History.cs" />
     <Compile Include="Services\AutoSuggestService.cs" />
     <Compile Include="Services\BingMapsRESTService.cs" />
@@ -117,6 +120,10 @@
     </Compile>
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\UpdateViewCommand.cs" />
+    <Page Include="Models\CustomTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\LoginView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -31,6 +31,10 @@ namespace UserPanel.ViewModels
 
         public string ConfirmPass { get; set; }
 
+        public string Name { get; set; }
+
+        public string Surname { get; set; }
+
         public RegisterViewModel(NavigationStore NV)
         {
             NavigateLoginCommand = new UpdateViewCommand<LoginViewModel>(NV, () => new LoginViewModel(NV));
@@ -43,7 +47,7 @@ namespace UserPanel.ViewModels
 
         public void Register(Object obj)
         {
-            if(!string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(ConfirmPass))
+            if(!string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(ConfirmPass) && !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Surname))
             {
                 if(Password.Length >= 6)
                 {
@@ -73,7 +77,7 @@ namespace UserPanel.ViewModels
             }
             else
             {
-                MessageBox.Show("Enter username & password");
+                MessageBox.Show("Enter all fields");
             }
         }
 
