@@ -52,6 +52,8 @@ namespace UserPanel.Views
             FromLocation.ItemsSource = new string[] { };
             ToLocation.FilterMode = AutoCompleteFilterMode.Contains;
             ToLocation.ItemsSource = new string[] { };
+
+            
         }
 
 

@@ -17,6 +17,10 @@ using UserPanel.Models;
 using UserPanel.Services;
 using UserPanel.Stores;
 
+
+
+
+
 namespace UserPanel.ViewModels
 {
     [AddINotifyPropertyChangedInterface]
@@ -72,8 +76,12 @@ namespace UserPanel.ViewModels
 
             NavigateBackCommand = new UpdateViewCommand<RegisterViewModel>(NV, () => new RegisterViewModel(NV));
             CancelRideCommand = new RelayCommand(a => CancelRideButton_Click());
-            NavigateHistoryCommand = new UpdateViewCommand<HistoryViewModel>(NV, () => new HistoryViewModel(NV) { HistoryUsr = Usr});
+            NavigateHistoryCommand = new UpdateViewCommand<HistoryViewModel>(NV, () => new HistoryViewModel(NV) { HistoryUsr = Usr });
+
+
         }
+
+        public string CurrentLocation { get; set; }
 
         public string FromLocation { get; set; }
 
@@ -337,4 +345,7 @@ namespace UserPanel.ViewModels
             Distance = "";
         }
     }
+    
+
+
 }
