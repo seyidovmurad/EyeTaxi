@@ -36,7 +36,7 @@ namespace UserPanel.ViewModels
             Locations = new LocationCollection();
 
             Timer = new DispatcherTimer();
-            Timer.Interval = new TimeSpan(0, 0, 1);
+            Timer.Interval = new TimeSpan(0, 0, 0,0,6);
             Timer.Tick += Timer_Tick;
 
             string[] dir = Directory.GetCurrentDirectory().Split('\\');
@@ -331,35 +331,73 @@ namespace UserPanel.ViewModels
 
         public void CancelRideButton_Click()
         {
-            PickedUp = false;
-            Timer.Stop();
-
-
-            Drivers.Find(d => d.Id == driver.Id).LastLocation = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
-            string[] dir = Directory.GetCurrentDirectory().Split('\\');
-            string path = "";
-            foreach (var item in dir)
+            if (PickedUp == false)
             {
-                if (item.ToLower() == "eyetaxi")
-                    break;
-                path += item + "\\";
+                Timer.Stop();
+
+
+                Drivers.Find(d => d.Id == driver.Id).LastLocation = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
+                string[] dir = Directory.GetCurrentDirectory().Split('\\');
+                string path = "";
+                foreach (var item in dir)
+                {
+                    if (item.ToLower() == "eyetaxi")
+                        break;
+                    path += item + "\\";
+                }
+                JsonSaveService<List<Driver>>.Save(Drivers, path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
+
+
+                Help = false;
+                System.Windows.MessageBox.Show("You have cancelled the ride!!!");
+                TaxiVisible = Visibility.Hidden;
+                To = default;
+                From = default;
+                TaxiLocation = default;
+                IsVisiblePin1 = Visibility.Visible;
+                IsVisiblePin2 = Visibility.Visible;
+                TaxiVisible = Visibility.Hidden;
+                StackVisibility = Visibility.Hidden;
+                ToLocation = "";
+                FromLocation = "";
+                Distance = "";
             }
-            JsonSaveService<List<Driver>>.Save(Drivers, path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
+
+            else
+            {
+                PickedUp = false;
+                Timer.Stop();
 
 
-            Help = false;
-            System.Windows.MessageBox.Show("You have cancelled the ride!!!");
-            TaxiVisible = Visibility.Hidden;
-            To = default;
-            From = default;
-            TaxiLocation = default;
-            IsVisiblePin1 = Visibility.Visible;
-            IsVisiblePin2 = Visibility.Visible;
-            TaxiVisible = Visibility.Hidden;
-            StackVisibility = Visibility.Hidden;
-            ToLocation = "";
-            FromLocation = "";
-            Distance = "";
+                Drivers.Find(d => d.Id == driver.Id).LastLocation = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
+                string[] dir = Directory.GetCurrentDirectory().Split('\\');
+                string path = "";
+                foreach (var item in dir)
+                {
+                    if (item.ToLower() == "eyetaxi")
+                        break;
+                    path += item + "\\";
+                }
+                JsonSaveService<List<Driver>>.Save(Drivers, path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
+                Drivers.Find(d => d.Id == driver.Id).Balance += float.Parse(Price);
+
+
+                Help = false;
+                System.Windows.MessageBox.Show("You have cancelled the ride!!!");
+                TaxiVisible = Visibility.Hidden;
+                To = default;
+                From = default;
+                TaxiLocation = default;
+                IsVisiblePin1 = Visibility.Visible;
+                IsVisiblePin2 = Visibility.Visible;
+                TaxiVisible = Visibility.Hidden;
+                StackVisibility = Visibility.Hidden;
+                ToLocation = "";
+                FromLocation = "";
+                Distance = "";
+                Price = "";
+            }
+
         }
     }
     

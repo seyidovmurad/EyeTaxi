@@ -59,8 +59,8 @@
 
 
         </StackPanel>
-        <!--Visibility="{Binding StackVisibility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"-->
-        <StackPanel Margin="0,0,0,-0.4" Background="White" Visibility="Hidden"  Panel.ZIndex="1">
+        
+        <StackPanel Margin="0,0,0,-0.4" Background="White" Visibility="{Binding StackVisibility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Panel.ZIndex="1">
 
             <Label Content="Driver" FontSize="18" FontWeight="Bold" Foreground="Red"/>
             <Label Content="Name: " FontWeight="Bold"/>
@@ -107,8 +107,6 @@
                 <map:Pushpin Name="Pin1" Visibility="{Binding IsVisiblePin1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding From, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="LightGreen"/>
                 <map:Pushpin Name="TaxiPin" Visibility="{Binding TaxiVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding TaxiLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="Black"/>
 
-                <map:Pushpin Location="{Binding CurrentLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="HotPink"/>
-                <!--<map:Pushpin Location="{Binding PushPinLocations[0], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />-->
             </map:MapItemsControl>
 
         </map:Map>

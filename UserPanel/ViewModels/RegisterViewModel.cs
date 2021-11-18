@@ -25,6 +25,8 @@ namespace UserPanel.ViewModels
 
         public ICommand RegisterCommand { get; set; }
 
+        public ICommand NavigateMapCommand { get; set; }
+
         public string Username { get; set; }
 
         public string Password { get; set; }
@@ -42,6 +44,8 @@ namespace UserPanel.ViewModels
             Users = JsonSaveService<List<User>>.Load("Users");
             if (Users == null)
                 Users = new List<User>(0);
+
+            NavigateMapCommand = new UpdateViewCommand<MapVIewModel>(NV, () => new MapVIewModel(NV));
         }
 
 
@@ -59,6 +63,9 @@ namespace UserPanel.ViewModels
                             Users.Add(new User(Username, Password));
                             JsonSaveService<object>.Save(Users, "Users");
                             MessageBox.Show("You have registered successfully");
+                            MapVIewModel.Usr = usr;
+                            MapVIewModel.Users = Users;
+                            NavigateMapCommand.Execute(obj);
                         }
                         else
                         {
