@@ -25,5 +25,11 @@ namespace UserPanel.Views
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var parentWindow = Window.GetWindow(this);
+            parentWindow.Close();
+        }
     }
 }
