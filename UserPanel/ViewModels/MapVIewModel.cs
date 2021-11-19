@@ -27,20 +27,18 @@ namespace UserPanel.ViewModels
     [AddINotifyPropertyChangedInterface]
     class MapVIewModel : BaseViewModel
     {
-
+        public string path = "";
 
         public MapVIewModel(NavigationStore NV)
         {
             Centerr = new Location(40.409264, 49.867092);
-            PushPinLocations = new List<Location>(3);
             Locations = new LocationCollection();
 
             Timer = new DispatcherTimer();
-            Timer.Interval = new TimeSpan(0, 0, 0,0,6);
+            Timer.Interval = new TimeSpan(0, 0, 0, 0, 500);
             Timer.Tick += Timer_Tick;
 
             string[] dir = Directory.GetCurrentDirectory().Split('\\');
-            string path = "";
             foreach (var item in dir)
             {
                 if (item.ToLower() == "eyetaxi")
@@ -48,56 +46,25 @@ namespace UserPanel.ViewModels
                 path += item + "\\";
             }
 
-
             Pricing price = JsonSaveService<Pricing>.Load(path + @"\EyeTaxi\AdminPanel\bin\Debug\pricing");
             if (price == null)
                 price = new Pricing();
-
             PricePerKm = price.PricePerKm;
-             
 
-            GoCommand = new RelayCommand(a =>
-            {
-                Locations.Clear();
-                if (ChckBox == false)
+            Drivers = JsonSaveService<List<Driver>>.Load(path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
+
+
+            GoCommand = new RelayCommand(a => ConfirmButton_Click(),
+                b => !string.IsNullOrWhiteSpace(FromLocation) && !string.IsNullOrWhiteSpace(ToLocation));
+            OrderTaxiCommand = new RelayCommand(a => ApplyButton_Click(),
+                b =>
                 {
-                    Centerr = GetRouteService.GetRoute(FromLocation, ToLocation, Locations);
-                    if (Locations.Count != 0)
-                    {
-                        From = Locations[0].ToString();
-                        To = Locations[Locations.Count - 1].ToString();
-                    }
-                }
-                else
-                {
-                    Centerr = GetRouteService.GetRoute(From, To, Locations);
-                }
-
-
-
-                if (Locations.Count > 0)
-                {
-                    GeoCoordinate ge = new GeoCoordinate(Locations[0].Latitude, Locations[0].Longitude);
-                    Distance = (ge.GetDistanceTo(new GeoCoordinate(Locations[Locations.Count - 1].Latitude, Locations[Locations.Count - 1].Longitude)) / 1000).ToString();
-                    float dist = float.Parse(Distance);
-                    Distance = dist.ToString("0.##") + "  km";
-                    Price = (dist * PricePerKm).ToString("0.##");
-                    if (float.Parse(Price) < 1.6f)
-                        Price = "1.6";
-                }
-            },
-
-            b => !string.IsNullOrWhiteSpace(FromLocation) && !string.IsNullOrWhiteSpace(ToLocation));
-
-            OrderTaxiCommand = new RelayCommand(a => ApplyButton_Click(), b => {
-                if (!string.IsNullOrWhiteSpace(Distance)) return true;
-                else return false;
-            });
-
+                    if (!string.IsNullOrWhiteSpace(Distance)) return true;
+                    else return false;
+                });
             NavigateBackCommand = new UpdateViewCommand<RegisterViewModel>(NV, () => new RegisterViewModel(NV));
             CancelRideCommand = new RelayCommand(a => CancelRideButton_Click());
             NavigateHistoryCommand = new UpdateViewCommand<HistoryViewModel>(NV, () => new HistoryViewModel(NV) { HistoryUsr = Usr });
-
 
         }
 
@@ -106,8 +73,6 @@ namespace UserPanel.ViewModels
         public string FromLocation { get; set; }
 
         public string ToLocation { get; set; }
-
-
 
         public RelayCommand GoCommand { get; set; }
 
@@ -144,20 +109,6 @@ namespace UserPanel.ViewModels
 
 
 
-        private List<Location> _pushPinLocations;
-
-        public List<Location> PushPinLocations
-        {
-            get => _pushPinLocations;
-            set
-            {
-                _pushPinLocations = value;
-                OnPropertyChanged("PushPinLocations");
-            }
-        }
-
-
-
         private Location _centerr;
 
         public Location Centerr
@@ -188,6 +139,7 @@ namespace UserPanel.ViewModels
 
         bool PickedUp = false;
 
+
         private Driver _driver;
 
         public Driver driver
@@ -208,6 +160,9 @@ namespace UserPanel.ViewModels
         public static User Usr { get; set; }
 
         public static List<User> Users { get; set; }
+
+
+
 
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -244,14 +199,6 @@ namespace UserPanel.ViewModels
                 }
                 else
                 {
-                    string[] dir = Directory.GetCurrentDirectory().Split('\\');
-                    string path = "";
-                    foreach (var item in dir)
-                    {
-                        if (item.ToLower() == "eyetaxi")
-                            break;
-                        path += item + "\\";
-                    }
 
                     var history = new History(driver, FromLocation, ToLocation, float.Parse(Price), Distance);
                     Users.Find(u => u.Username == Usr.Username).Histories.Add(history);
@@ -279,7 +226,8 @@ namespace UserPanel.ViewModels
                     ToLocation = "";
                     FromLocation = "";
                     Distance = "";
-
+                    Price = "";
+                    Centerr = new Location(40.409264, 49.867092);
                 }
             }
         }
@@ -288,24 +236,13 @@ namespace UserPanel.ViewModels
 
         public void ApplyButton_Click()
         {
-            string[] dir = Directory.GetCurrentDirectory().Split('\\');
-            string path = "";
-            foreach (var item in dir)
-            {
-                if (item.ToLower() == "eyetaxi")
-                    break;
-                path += item + "\\";
-            }
-            Drivers = JsonSaveService<List<Driver>>.Load(path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
-
-
-
             try
             {
                 driver = FindTaxiService.TaxiLocation(new Location(double.Parse(From.Split(',')[0]), double.Parse(From.Split(',')[1])), Drivers);
                 TaxiLocation = driver.LastLocation.Latitude + ", " + driver.LastLocation.Longitude;
                 MessageBox.Show(driver.Name + " " + driver.Surname);
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
@@ -331,76 +268,71 @@ namespace UserPanel.ViewModels
 
         public void CancelRideButton_Click()
         {
-            if (PickedUp == false)
-            {
-                Timer.Stop();
-
-
-                Drivers.Find(d => d.Id == driver.Id).LastLocation = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
-                string[] dir = Directory.GetCurrentDirectory().Split('\\');
-                string path = "";
-                foreach (var item in dir)
-                {
-                    if (item.ToLower() == "eyetaxi")
-                        break;
-                    path += item + "\\";
-                }
-                JsonSaveService<List<Driver>>.Save(Drivers, path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
-
-
-                Help = false;
-                System.Windows.MessageBox.Show("You have cancelled the ride!!!");
-                TaxiVisible = Visibility.Hidden;
-                To = default;
-                From = default;
-                TaxiLocation = default;
-                IsVisiblePin1 = Visibility.Visible;
-                IsVisiblePin2 = Visibility.Visible;
-                TaxiVisible = Visibility.Hidden;
-                StackVisibility = Visibility.Hidden;
-                ToLocation = "";
-                FromLocation = "";
-                Distance = "";
-            }
-
-            else
+            if (PickedUp == true)
             {
                 PickedUp = false;
-                Timer.Stop();
 
-
-                Drivers.Find(d => d.Id == driver.Id).LastLocation = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
-                string[] dir = Directory.GetCurrentDirectory().Split('\\');
-                string path = "";
-                foreach (var item in dir)
-                {
-                    if (item.ToLower() == "eyetaxi")
-                        break;
-                    path += item + "\\";
-                }
-                JsonSaveService<List<Driver>>.Save(Drivers, path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
                 Drivers.Find(d => d.Id == driver.Id).Balance += float.Parse(Price);
-
-
-                Help = false;
-                System.Windows.MessageBox.Show("You have cancelled the ride!!!");
-                TaxiVisible = Visibility.Hidden;
-                To = default;
-                From = default;
-                TaxiLocation = default;
-                IsVisiblePin1 = Visibility.Visible;
-                IsVisiblePin2 = Visibility.Visible;
-                TaxiVisible = Visibility.Hidden;
-                StackVisibility = Visibility.Hidden;
-                ToLocation = "";
-                FromLocation = "";
-                Distance = "";
-                Price = "";
             }
 
+
+
+            Timer.Stop();
+
+            Drivers.Find(d => d.Id == driver.Id).LastLocation = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
+
+            JsonSaveService<List<Driver>>.Save(Drivers, path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
+
+            Help = false;
+            System.Windows.MessageBox.Show("You have cancelled the ride!!!");
+            TaxiVisible = Visibility.Hidden;
+            To = default;
+            From = default;
+            TaxiLocation = default;
+            IsVisiblePin1 = Visibility.Visible;
+            IsVisiblePin2 = Visibility.Visible;
+            TaxiVisible = Visibility.Hidden;
+            StackVisibility = Visibility.Hidden;
+            ToLocation = "";
+            FromLocation = "";
+            Distance = "";
+            Price = "";
+            Centerr = new Location(40.409264, 49.867092);
         }
+
+
+        public void ConfirmButton_Click()
+        {
+            Locations.Clear();
+            if (ChckBox == false)
+            {
+                Centerr = GetRouteService.GetRoute(FromLocation, ToLocation, Locations);
+                if (Locations.Count != 0)
+                {
+                    From = Locations[0].ToString();
+                    To = Locations[Locations.Count - 1].ToString();
+                }
+            }
+            else
+            {
+                Centerr = GetRouteService.GetRoute(From, To, Locations);
+            }
+
+            if (Locations.Count > 0)
+            {
+                GeoCoordinate ge = new GeoCoordinate(Locations[0].Latitude, Locations[0].Longitude);
+                Distance = (ge.GetDistanceTo(new GeoCoordinate(Locations[Locations.Count - 1].Latitude, Locations[Locations.Count - 1].Longitude)) / 1000).ToString();
+                float dist = float.Parse(Distance);
+                Distance = dist.ToString("0.##") + "  km";
+                Price = (dist * PricePerKm).ToString("0.##");
+                if (float.Parse(Price) < 1.6f)
+                    Price = "1.6";
+            }
+        }
+
+
     }
-    
+
 
 
 }
