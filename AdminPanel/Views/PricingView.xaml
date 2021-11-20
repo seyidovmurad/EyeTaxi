@@ -25,7 +25,7 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="50,0,0,0" Grid.Row="2">
             <TextBlock Text="Pricing Per Km:" VerticalAlignment="Center"/>
-            <TextBox x:Name="PriceTxtb" VerticalAlignment="Center" Margin="10,0,20,0" Width="100" Text="{Binding Pricing.PricePerKm, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" PreviewTextInput="PriceTxtb_PreviewTextInput"/>
+            <TextBox x:Name="PriceTxtb" VerticalAlignment="Center" Margin="10,0,20,0" Width="100" Text="{Binding Pricing.PricePerKm, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" />
             <Button Content="Change Pricing" Command="{Binding ChangePricingCommand}" Style="{StaticResource WithBorderBtn}"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="50,0,0,0">

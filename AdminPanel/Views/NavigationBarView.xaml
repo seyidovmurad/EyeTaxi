@@ -22,13 +22,11 @@
                 Margin="40,0"
                 FontSize="20"
                 FontFamily="Gadugi" FontWeight="Bold"/>
-
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Button Command="{Binding NavigateDriverPricingCommand}" Style="{StaticResource WithOutBorderBtn}">Pricing</Button>
                 <Button Command="{Binding NavigateDriverListCommand}" Style="{StaticResource WithOutBorderBtn}">Drivers</Button>
                 <Button Margin="0,5,20,5" Padding="20,0,10,0" Command="{Binding NavigateAddDriverCommand}" Style="{StaticResource WithBorderBtn}">Add Driver</Button>
             </StackPanel>
-
         </Grid>
     </Border>
 </UserControl>

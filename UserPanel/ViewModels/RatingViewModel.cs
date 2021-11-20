@@ -22,7 +22,7 @@ namespace UserPanel.ViewModels
             CancelCommand = new RelayCommand(CancelButton_Click);
         }
 
-        public float Rating { get; set; }
+        public int Rating { get; set; }
 
         public static Driver Driver { get; set; }
 
@@ -36,7 +36,11 @@ namespace UserPanel.ViewModels
 
         public void OkButton_Click(Object obj)
         {
-            Drivers.Find(dr => dr.Id == Driver.Id).Rating = Rating;
+            Driver = Drivers.Find(dr => dr.Id == Driver.Id);
+            Driver.RatingCount += 1;
+            Driver.RatingSum += Rating;
+            float rat = (float)Driver.RatingSum / Driver.RatingCount;
+            Driver.Rating = rat.ToString("0.#");
             //Salam meyki
             string[] dir = Directory.GetCurrentDirectory().Split('\\');
             string path = "";

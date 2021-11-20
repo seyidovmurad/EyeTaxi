@@ -61,9 +61,9 @@ namespace UserPanel.ViewModels
                         if (usr == null)
                         {
                             Users.Add(new User(Username, Password));
-                            JsonSaveService<object>.Save(Users, "Users");
+                            JsonSaveService<List<User>>.Save(Users, "Users");
                             MessageBox.Show("You have registered successfully");
-                            MapVIewModel.Usr = usr;
+                            MapVIewModel.Usr = Users.Last();
                             MapVIewModel.Users = Users;
                             NavigateMapCommand.Execute(obj);
                         }
