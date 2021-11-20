@@ -12,6 +12,7 @@ using UserPanel.Commands;
 using UserPanel.Models;
 using UserPanel.Services;
 using UserPanel.Stores;
+using UserPanel.Views;
 
 namespace UserPanel.ViewModels
 {
