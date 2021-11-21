@@ -24,9 +24,9 @@ namespace AdminPanel.Services
                 .RuleFor(d => d.PhoneNumber, f => f.Phone.PhoneNumber())
                 .RuleFor(d => d.Balance, f => f.Random.Number(20, 300));
             var driver = driverFaker.Generate();
-            driver.RatingCount = 10;
-            driver.RatingSum = 30;
-            driver.Rating = "3";
+            driver.RatingCount = 0;
+            driver.RatingSum = 0;
+            driver.Rating = "0";
 
             driver.Car = GenerateCar();
             driver.Car.Color = "Black";

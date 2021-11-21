@@ -73,7 +73,6 @@ namespace UserPanel.Views
             Distance.Content = "";
             Pin1.Location = default;
             Pin2.Location = default;
-            Route.Locations.Clear();
             FromLocation.Text = "";
             ToLocation.Text = "";
             Help = false;
@@ -131,9 +130,14 @@ namespace UserPanel.Views
                 ToLocation.ItemsSource = new string[] { };
             }
         }
+
+       
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var parentWindow = Window.GetWindow(this);
+            parentWindow.Close();
+        }
+
+      
     }
-
-
-
-
 }

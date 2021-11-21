@@ -158,6 +158,8 @@ namespace UserPanel.ViewModels
 
         public Visibility StackVisibility { get; set; } = Visibility.Hidden;
 
+        public Visibility StackVisibility2 { get; set; } = Visibility.Visible;
+
         public static User Usr { get; set; }
 
         public static List<User> Users { get; set; }
@@ -223,6 +225,7 @@ namespace UserPanel.ViewModels
                     IsVisiblePin2 = Visibility.Visible;
                     TaxiVisible = Visibility.Hidden;
                     StackVisibility = Visibility.Hidden;
+                    StackVisibility2 = Visibility.Visible;
                     ToLocation = "";
                     FromLocation = "";
                     Distance = "";
@@ -256,6 +259,7 @@ namespace UserPanel.ViewModels
             if (TaxiLocation != null)
             {
                 StackVisibility = Visibility.Visible;
+                StackVisibility2 = Visibility.Hidden;
                 Locations.Clear();
                 GetRouteService.GetRoute(TaxiLocation, From, Locations);
                 TaxiVisible = Visibility.Visible;
@@ -297,11 +301,13 @@ namespace UserPanel.ViewModels
             IsVisiblePin2 = Visibility.Visible;
             TaxiVisible = Visibility.Hidden;
             StackVisibility = Visibility.Hidden;
+            StackVisibility2 = Visibility.Visible;
             ToLocation = "";
             FromLocation = "";
             Distance = "";
             Price = "";
             Centerr = new Location(40.409264, 49.867092);
+            Locations.Clear();
         }
 
 

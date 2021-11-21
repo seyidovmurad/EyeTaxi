@@ -4,53 +4,159 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserPanel.Views"
-             xmlns:map="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF" xmlns:controls="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
+             xmlns:map="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF" xmlns:controls="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="White">
 
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="3*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Background="Black" Opacity="0.8"  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="20"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1"
+                    Style="{StaticResource MaterialDesignPaperDarkButton}"
+                    
+                     Width="20" Height="20"
+                    BorderThickness="0"
+                    Padding="0,-10"
+                    Content="🗕" Foreground="White" Background="Transparent"
+                    />
 
-        <StackPanel Margin="0,0,0,-0.4"  Background="White" Panel.ZIndex="1">
-            <TextBlock FontSize="20" Text="From" Foreground="Black" Margin="10,0,0,0"/>
-            <controls:AutoCompleteBox Name="FromLocation" FontSize="16" Text="{Binding FromLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextChanged="FromLocation_TextChanged" BorderBrush="Black" BorderThickness="2" Margin="10,0"/>
+            <Button Grid.Column="2"
+                    Click="Button_Click"
+                    Style="{StaticResource MaterialDesignPaperDarkButton}"
+                     Width="20" Height="20"
+                    BorderThickness="0"
+                    Padding="0,-10"
+                    Content="x" Foreground="White" Background="Transparent"
+                    />
 
-            <TextBlock FontSize="20" Text="To" Margin="10,20,0,0" Foreground="Black"/>
-            <controls:AutoCompleteBox Name="ToLocation" FontSize="16" Text="{Binding ToLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" TextChanged="ToLocation_TextChanged" BorderBrush="Black" BorderThickness="2" Margin="10,0"/>
+        </Grid>
 
-            <CheckBox Name="ChckBox" Content="Select locations on map" Checked="ChckBox_Click" Unchecked="ChckBox_Click" IsChecked="{Binding ChckBox, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,10,10,0"/>
 
-            <Button 
-                Margin="10,16,10,0"
+
+
+        <Grid Grid.Row="1">
+            <map:Map x:Name="Map" Grid.ColumnSpan="2" ZoomLevel="12" Center="{Binding Centerr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MouseDoubleClick="Map_MouseDoubleClick"  Panel.ZIndex="-1" Margin="0,0,0,-0.4" Mode="Road">
+                <map:MapItemsControl>
+                    <map:MapPolyline Name="Route" Locations="{Binding Locations}" Stroke="Blue" StrokeThickness="5" />
+                    <map:Pushpin Name="Pin2" Visibility="{Binding IsVisiblePin2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding To, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="LightBlue"/>
+                    <map:Pushpin Name="Pin1" Visibility="{Binding IsVisiblePin1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding From, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="LightGreen"/>
+                    <map:Pushpin Name="TaxiPin" Visibility="{Binding TaxiVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding TaxiLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="Black"/>
+                </map:MapItemsControl>
+            </map:Map>
+        </Grid>
+
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="280"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Expander Header="Eye Taxi"  VerticalAlignment="Top" Visibility="{Binding StackVisibility2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Background="Black" Foreground="White" Opacity="0.8" >
+                <Grid  Grid.Column="0"  Height="560"  Background="Black" Opacity="0.8"  >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+
+                    <TextBlock Grid.Row="1"
+                           Width="45"
+                           Text="From"
+                           HorizontalAlignment="Left"
+                           FontSize="18" Margin="5,0"
+                           Foreground="White" VerticalAlignment="Center">
+                    </TextBlock>
+                    <controls:AutoCompleteBox  Grid.Row="1"  Name="FromLocation" 
+                                           VerticalContentAlignment="Center"
+                                           FontSize="16" 
+                                           Background="Transparent"
+                                           Foreground="White"
+                                           Width="150"
+                                           HorizontalAlignment="Right"
+                                           Text="{Binding FromLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                           TextChanged="FromLocation_TextChanged"
+                                           BorderBrush="Purple" BorderThickness="2" 
+                                           Margin="5,15"
+                                            materialDesign:HintAssist.Hint="From Where"
+                                           />
+                    <TextBlock Grid.Row="2"
+                           Width="45"
+                           Text="To"
+                           HorizontalAlignment="Left"
+                           FontSize="18" Margin="5,0"
+                           Foreground="White" VerticalAlignment="Center">
+                    </TextBlock>
+
+                    <controls:AutoCompleteBox Name="ToLocation" Grid.Row="2" FontSize="16"
+                                         VerticalContentAlignment="Center"
+                                          Background="Transparent"
+                                           Foreground="White"
+                                          HorizontalAlignment="Right"
+                                           Width="150"
+                                          Text="{Binding ToLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                          TextChanged="ToLocation_TextChanged"
+                                          BorderBrush="Purple" BorderThickness="2"
+                                         Margin="5,15"
+                                          materialDesign:HintAssist.Hint="To Where"/>
+
+                    <Border HorizontalAlignment="Left" Margin="50,0" Grid.Row="3" BorderBrush="Purple" Width="15" Height="15"  BorderThickness="2">
+                        <CheckBox  
+                       
+                                  Name="ChckBox"
+                          Foreground="White"
+                                  IsChecked="{Binding ChckBox, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                             Unchecked="ChckBox_Click"
+                                   VerticalAlignment="Center"
+                                  HorizontalAlignment="Center"
+                            Checked="ChckBox_Click"
+                                   ></CheckBox>
+                    </Border>
+                    <TextBlock Grid.Row="3" Margin="40,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        Select Location On Map
+                    </TextBlock>
+
+                    <Button 
+                        Grid.Row="4"
+                Width="100"
                 Content="Confirm" 
                 FontSize="16" 
                 Foreground="White" 
                 Background="Black"
                 Command="{Binding GoCommand}"/>
 
+                    <Label Grid.Row="5" HorizontalAlignment="Left" Content="Distance:" Foreground="White" Margin="0,18,0,0"/>
+                    <Label Grid.Row="5" HorizontalAlignment="Right" Name="Distance" Foreground="White" Content="{Binding Distance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="23"/>
 
-            <Label Content="Distance:" Margin="0,18,0,0"/>
-            <Label Name="Distance" Content="{Binding Distance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="23"/>
-            <Label Content="Price: " Margin="0,16,0,0"/>
-            <Label Content="{Binding Price, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="23"/>
+                    <Label Grid.Row="6" HorizontalAlignment="Left" Content="Price: " Foreground="White" Margin="0,16,0,0"/>
+                    <Label Grid.Row="6" HorizontalAlignment="Right" Foreground="White" Content="{Binding Price, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="23"/>
 
-
-            <Button
+                    <Button Grid.Row="7"
                 Content="Order Taxi" 
                 FontSize="16" 
                 Foreground="White" 
                 Background="Black"
-                Margin="13,15,10,0"
+                Width="120"
                 Command="{Binding OrderTaxiCommand}"/>
 
-
-            <Button 
-                Margin="10,29,10,0"
+                    <Button  Grid.Row="8"
+               Width="120"
                 Content="Log Out" 
                 FontSize="16" 
                 Foreground="White" 
@@ -58,59 +164,63 @@
                 Command="{Binding NavigateBackCommand}"/>
 
 
-        </StackPanel>
-        
-        <StackPanel Margin="0,0,0,-0.4" Background="White" Visibility="{Binding StackVisibility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Panel.ZIndex="1">
+                </Grid>
 
-            <Label Content="Driver" FontSize="18" FontWeight="Bold" Foreground="Red"/>
-            <Label Content="Name: " FontWeight="Bold"/>
-            <Label Content="{Binding driver.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="31"/>
-            <Label Content="Surname: " FontWeight="Bold"/>
-            <Label Content="{Binding driver.Surname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="28"/>
-            <Label Content="Phone Number: " FontWeight="Bold"/>
-            <Label Content="{Binding driver.PhoneNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="29"/>
+            </Expander>
 
-            <Label Content="Car" FontSize="18" FontWeight="Bold" Foreground="Red" Margin="0"/>
-            <Label Content="Vendor: " FontWeight="Bold"/>
-            <Label Content="{Binding driver.Car.Vendor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="29"/>
-            <Label Content="Model: " FontWeight="Bold"/>
-            <Label Content="{Binding driver.Car.Model, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="32"/>
-            <Label Content="Color: " FontWeight="Bold"/>
-            <Label Content="{Binding driver.Car.Color, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="31"/>
+            <Expander Header="Eye Taxi"  IsExpanded="True" Visibility="{Binding StackVisibility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  VerticalAlignment="Top" Background="Black" Foreground="White" Opacity="0.8" >
+                <Grid  Grid.Column="0"  Height="560"  Background="Black" Opacity="0.8"  >
+                    <Grid.RowDefinitions>
 
-            <Button 
-                Margin="10,-1,10,0"
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Content="Driver" FontSize="18" FontWeight="Bold" Foreground="Red"/>
+                    <Label Grid.Row="1" HorizontalAlignment="Left" Content="Name: " Foreground="White" FontWeight="Bold"/>
+                    <Label Grid.Row="1" HorizontalAlignment="Right" Foreground="White" Content="{Binding driver.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="31"/>
+                    <Label  Grid.Row="2" HorizontalAlignment="Left" Foreground="White" Content="Surname: " FontWeight="Bold"/>
+                    <Label Grid.Row="2"  HorizontalAlignment="Right" Foreground="White" Content="{Binding driver.Surname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="28"/>
+                    <Label Grid.Row="3" HorizontalAlignment="Left"  Foreground="White" Content="Phone Number: " FontWeight="Bold"/>
+                    <Label Grid.Row="3" HorizontalAlignment="Right" Foreground="White" Content="{Binding driver.PhoneNumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="29"/>
+
+                    <Label  Grid.Row="4"   Content="Car" FontSize="18" FontWeight="Bold" Foreground="Red" />
+                    <Label  Grid.Row="5" HorizontalAlignment="Left" Foreground="White" Content="Vendor: " FontWeight="Bold"/>
+                    <Label Grid.Row="5" HorizontalAlignment="Right"   Foreground="White" Content="{Binding driver.Car.Vendor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="29"/>
+                    <Label Grid.Row="6" HorizontalAlignment="Left"  Foreground="White" Content="Model: " FontWeight="Bold"/>
+                    <Label  Grid.Row="6"  HorizontalAlignment="Right" Foreground="White" Content="{Binding driver.Car.Model, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="32"/>
+                    <Label Grid.Row="7" HorizontalAlignment="Left" Foreground="White" Content="Color: " FontWeight="Bold"/>
+                    <Label Grid.Row="7" HorizontalAlignment="Right" Foreground="White" Content="{Binding driver.Car.Color, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="31"/>
+
+                    <Button  Grid.Row="8"
                 Content="Cancel Ride" 
-                FontSize="16" 
+                FontSize="16"  Width="120"
                 Foreground="White" 
                 Background="Black"
-                Command="{Binding CancelRideCommand}"/>
-        </StackPanel>
+                Command="{Binding CancelRideCommand}" />
 
-        <Button 
-                Margin="490,7,10,410.6"
+                </Grid>
+            </Expander>
+
+
+        </Grid>
+
+        <Button  Grid.Row="1"
+                Width="100"
+                 
                 Content="History" 
                 FontSize="16" 
                 Foreground="White" 
                 Background="Black"
-                Command="{Binding NavigateHistoryCommand}" Grid.Column="1" Panel.ZIndex="1"/>
-
-        <map:Map x:Name="Map" ZoomLevel="12" Center="{Binding Centerr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" MouseDoubleClick="Map_MouseDoubleClick" Grid.ColumnSpan="2" Margin="0,0,0,-0.4" Mode="Road">
-
-
-
-            <map:MapItemsControl>
-
-
-                <map:MapPolyline Name="Route" Locations="{Binding Locations}" Stroke="Blue" StrokeThickness="5" />
-                <map:Pushpin Name="Pin2" Visibility="{Binding IsVisiblePin2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding To, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="LightBlue"/>
-                <map:Pushpin Name="Pin1" Visibility="{Binding IsVisiblePin1, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding From, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="LightGreen"/>
-                <map:Pushpin Name="TaxiPin" Visibility="{Binding TaxiVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Location="{Binding TaxiLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Background="Black"/>
-
-            </map:MapItemsControl>
-
-        </map:Map>
+                Command="{Binding NavigateHistoryCommand}" Panel.ZIndex="1" Margin="690,10,10,387.6"/>
+  
     </Grid>
-
 
 </UserControl>

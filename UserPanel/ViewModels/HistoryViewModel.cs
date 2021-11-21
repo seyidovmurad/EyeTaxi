@@ -7,6 +7,7 @@ using System.Windows.Input;
 using UserPanel.Commands;
 using UserPanel.Models;
 using UserPanel.Stores;
+using UserPanel.Views;
 
 namespace UserPanel.ViewModels
 {
@@ -14,17 +15,19 @@ namespace UserPanel.ViewModels
     {
         public ICommand NavigateBackCommand { get; set; }
 
-        public string Username { get; set; }
-
-        public string Password { get; set; }
+        public ICommand InfoButtonCommand { get; set; }
 
         public User HistoryUsr { get; set; }
+
+        public int SelectedIndex { get; set; }
 
         public HistoryViewModel(NavigationStore NV)
         {
             NavigateBackCommand = new UpdateViewCommand<MapVIewModel>(NV, () => new MapVIewModel(NV));
         }
 
+
+       
 
     }
 }
