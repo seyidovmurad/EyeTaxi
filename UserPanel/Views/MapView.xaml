@@ -61,7 +61,7 @@
                 <ColumnDefinition Width="280"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Expander Header="Eye Taxi"  VerticalAlignment="Top" Visibility="{Binding StackVisibility2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Background="Black" Foreground="White" Opacity="0.8" >
+            <Expander Margin="0,0,10,-74" Header="Eye Taxi"  VerticalAlignment="Top" Visibility="{Binding StackVisibility2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Background="Black" Foreground="White" Opacity="0.8" >
                 <Grid  Grid.Column="0"  Height="560"  Background="Black" Opacity="0.8"  >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0"/>
@@ -80,7 +80,7 @@
                            Width="45"
                            Text="From"
                            HorizontalAlignment="Left"
-                           FontSize="18" Margin="5,0"
+                           FontSize="18" Margin="11,23,0,23"
                            Foreground="White" VerticalAlignment="Center">
                     </TextBlock>
                     <controls:AutoCompleteBox  Grid.Row="1"  Name="FromLocation" 
@@ -88,19 +88,19 @@
                                            FontSize="16" 
                                            Background="Transparent"
                                            Foreground="White"
-                                           Width="150"
+                                           Width="180"
                                            HorizontalAlignment="Right"
                                            Text="{Binding FromLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                            TextChanged="FromLocation_TextChanged"
                                            BorderBrush="Purple" BorderThickness="2" 
-                                           Margin="5,15"
+                                           Margin="0,23,13,15"
                                             materialDesign:HintAssist.Hint="From Where"
                                            />
                     <TextBlock Grid.Row="2"
                            Width="45"
                            Text="To"
                            HorizontalAlignment="Left"
-                           FontSize="18" Margin="5,0"
+                           FontSize="18" Margin="11,23,0,23"
                            Foreground="White" VerticalAlignment="Center">
                     </TextBlock>
 
@@ -109,11 +109,11 @@
                                           Background="Transparent"
                                            Foreground="White"
                                           HorizontalAlignment="Right"
-                                           Width="150"
+                                           Width="180"
                                           Text="{Binding ToLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                           TextChanged="ToLocation_TextChanged"
                                           BorderBrush="Purple" BorderThickness="2"
-                                         Margin="5,15"
+                                         Margin="0,23,13,15"
                                           materialDesign:HintAssist.Hint="To Where"/>
 
                     <Border HorizontalAlignment="Left" Margin="50,0" Grid.Row="3" BorderBrush="Purple" Width="15" Height="15"  BorderThickness="2">
@@ -125,10 +125,10 @@
                              Unchecked="ChckBox_Click"
                                    VerticalAlignment="Center"
                                   HorizontalAlignment="Center"
-                            Checked="ChckBox_Click"
+                            Checked="ChckBox_Click" Margin="-2,0,1.667,-0.333"
                                    ></CheckBox>
                     </Border>
-                    <TextBlock Grid.Row="3" Margin="40,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock Grid.Row="3" Margin="0,27,58,27" HorizontalAlignment="Right" VerticalAlignment="Center">
                         Select Location On Map
                     </TextBlock>
 
@@ -141,10 +141,10 @@
                 Background="Black"
                 Command="{Binding GoCommand}"/>
 
-                    <Label Grid.Row="5" HorizontalAlignment="Left" Content="Distance:" Foreground="White" Margin="0,18,0,0"/>
+                    <Label Grid.Row="5" HorizontalAlignment="Left" Content="Distance:" Foreground="White" Margin="10,18,0,0"/>
                     <Label Grid.Row="5" HorizontalAlignment="Right" Name="Distance" Foreground="White" Content="{Binding Distance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="23"/>
 
-                    <Label Grid.Row="6" HorizontalAlignment="Left" Content="Price: " Foreground="White" Margin="0,16,0,0"/>
+                    <Label Grid.Row="6" HorizontalAlignment="Left" Content="Price: " Foreground="White" Margin="11,16,0,0"/>
                     <Label Grid.Row="6" HorizontalAlignment="Right" Foreground="White" Content="{Binding Price, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="23"/>
 
                     <Button Grid.Row="7"
@@ -168,7 +168,7 @@
 
             </Expander>
 
-            <Expander Header="Eye Taxi"  IsExpanded="True" Visibility="{Binding StackVisibility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  VerticalAlignment="Top" Background="Black" Foreground="White" Opacity="0.8" >
+            <Expander Margin="0,0,10,0" Header="Eye Taxi"  IsExpanded="True" Visibility="{Binding StackVisibility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  VerticalAlignment="Top" Background="Black" Foreground="White" Opacity="0.8" >
                 <Grid  Grid.Column="0"  Height="560"  Background="Black" Opacity="0.8"  >
                     <Grid.RowDefinitions>
 
@@ -212,15 +212,16 @@
 
         </Grid>
 
-        <Button  Grid.Row="1"
+        <Button  Margin="5" Grid.Row="1"
                 Width="100"
-                 
+                 HorizontalAlignment="Right"
                 Content="History" 
                 FontSize="16" 
+                 VerticalAlignment="Top"
                 Foreground="White" 
                 Background="Black"
-                Command="{Binding NavigateHistoryCommand}" Panel.ZIndex="1" Margin="690,10,10,387.6"/>
-  
+                Command="{Binding NavigateHistoryCommand}" Panel.ZIndex="1" />
+
     </Grid>
 
 </UserControl>

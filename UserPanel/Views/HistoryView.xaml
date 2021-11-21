@@ -45,15 +45,23 @@
                 <RowDefinition Height="40" />
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Button Grid.Row="0"
-                    BorderBrush="Purple"
-                    HorizontalAlignment="Left"
-                Content="Back" 
-                FontSize="16" 
-                Foreground="White" 
-                Background="DarkBlue"
-                 Canvas.Top="10" Width="88" Margin="5,0" Height="35"
-                Command="{Binding NavigateBackCommand}"/>
+           
+            <Button 
+                 Foreground="White" 
+                Grid.Row="0"
+                Canvas.Top="10" Width="88" Margin="5,0" Height="35"
+                Command="{Binding NavigateBackCommand}"
+                 Content="Back"
+                 FontSize="16"
+                HorizontalAlignment="Left"
+                         Style="{StaticResource MaterialDesignOutlinedDarkButton}"
+                         ToolTip="MaterialDesignOutlinedButton"
+                       
+                VerticalAlignment="Top"
+                
+                        
+                     
+                         IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"  />
 
             <TextBlock Foreground="White" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="100,0">Travel History</TextBlock>
             <ListBox  Grid.Row="1"  Margin="10"  ItemsSource="{Binding HistoryUsr.Histories}" Name="Listt" SelectedIndex="{Binding SelectedIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
