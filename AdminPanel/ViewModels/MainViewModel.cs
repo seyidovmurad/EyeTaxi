@@ -23,6 +23,8 @@ namespace AdminPanel.ViewModels
 
         public ICommand NavigateDriverPricingCommand { get; set; }
 
+        public ICommand NavigateStatisticsCommand { get; set; }
+
         public MainViewModel (NavigationStore navigation)
         {
             _navigation = navigation;
@@ -30,6 +32,7 @@ namespace AdminPanel.ViewModels
             NavigateAddDriverCommand = new UpdateViewCommand<DriverEditViewModel>(navigation, () => new DriverEditViewModel(navigation));
             NavigateDriverListCommand = new UpdateViewCommand<DriverListViewModel>(navigation, () => new DriverListViewModel(navigation));
             NavigateDriverPricingCommand = new UpdateViewCommand<PricingViewModel>(navigation, () => new PricingViewModel());
+            NavigateStatisticsCommand = new UpdateViewCommand<StatisticsViewModel>(navigation, () => new StatisticsViewModel());
             SelectedViewModel = _navigation.SelectedViewModel;
         }
 

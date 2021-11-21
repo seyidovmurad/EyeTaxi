@@ -84,6 +84,9 @@
             <DataTemplate DataType="{x:Type viewmodels:DriverMapViewModel}">
                 <views:DriverMapView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:StatisticsViewModel}">
+                <views:StatisticsView/>
+            </DataTemplate>
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />

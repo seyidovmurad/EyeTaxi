@@ -81,11 +81,12 @@
             <StackPanel Grid.Row="4" Orientation="Horizontal">
                 <Image Margin="10" Source="/Assets/statistics.png"></Image>
                 <Button
+                    Command="{Binding NavigateStatisticsCommand}"
                     Style="{StaticResource MaterialDesignPaperLightButton}"
                     Width="187"
                     ToolTip="Resource name: MaterialDesignPaperLightButton"
                     Content="Statistics"
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Margin="0,6,0,5.333" >
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Margin="0,6,0,5" >
 
                 </Button>
 
