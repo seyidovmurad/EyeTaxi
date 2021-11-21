@@ -5,45 +5,122 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UserPanel.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="White">
-    <Canvas Margin="0,0,0,-0.4">
-        <Button
+             d:DesignHeight="450" Background="#111111" d:DesignWidth="500" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="Black" Opacity="0.8"  >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="20"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1"
+                    Style="{StaticResource MaterialDesignPaperDarkButton}"
+                    
+                     Width="20" Height="20"
+                    BorderThickness="0"
+                    Padding="0,-10"
+                    Content="🗕" Foreground="White" Background="Transparent"
+                    />
+
+            <Button Grid.Column="2"
+                    Click="Button_Click"
+                    Style="{StaticResource MaterialDesignPaperDarkButton}"
+                     Width="20" Height="20"
+                    BorderThickness="0"
+                    Padding="0,-10"
+                    Content="x" Foreground="White" Background="Transparent"
+                    />
+
+        </Grid>
+
+
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button Grid.Row="0"
+                    BorderBrush="Purple"
+                    HorizontalAlignment="Left"
                 Content="Back" 
                 FontSize="16" 
                 Foreground="White" 
-                Background="Black"
-                Canvas.Left="702" Canvas.Top="10" Width="88" Height="35"
+                Background="DarkBlue"
+                 Canvas.Top="10" Width="88" Margin="5,0" Height="35"
                 Command="{Binding NavigateBackCommand}"/>
 
-        <ListBox Height="395" Width="800" Canvas.Top="55" ItemsSource="{Binding HistoryUsr.Histories}" Name="List">
+            <TextBlock Foreground="White" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="100,0">Travel History</TextBlock>
+            <ListBox  Grid.Row="1"  Margin="10"  ItemsSource="{Binding HistoryUsr.Histories}" Name="Listt" SelectedIndex="{Binding SelectedIndex, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
 
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="IsSelected" Value="True"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="{Binding StartPoint}"/>
-                        <Label Content="  --  "/>
-                        <Label Content="{Binding EndPoint}"/>
-                        <Label Content="Date: " Margin="50,0,0,0"/>
-                        <Label Content="{Binding TravelDate}"/>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="IsSelected" Value="True"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical">
+                        </StackPanel>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
 
-                        <Button Content="Show Info" FontSize="16"  Foreground="White"  Background="Black" Canvas.Left="702" Canvas.Top="10" Width="88" Height="35"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            
-        </ListBox>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
 
-    </Canvas>
+                        <Expander BorderBrush="Purple"  BorderThickness="2" Header="{Binding EndPoint}"  Foreground="White" Margin="5" Width="1000" Background="#111111">
+                            <Border BorderBrush="Purple" BorderThickness="1">
+                                <StackPanel Background="#111111" >
+                                    <Separator Background="Purple"></Separator>
+                                    <TextBlock Margin="5" FontSize="16" Foreground="White">Driver</TextBlock>
+                                    <TextBlock Margin="5" FontSize="16" Foreground="White" Text="{Binding Driver.Name}"></TextBlock>
+                                    <Separator  Background="Purple"></Separator>
+                                    <TextBlock Margin="5" FontSize="16" Foreground="White">From</TextBlock>
+                                    <TextBlock Margin="5" FontSize="16" Foreground="White" Text="{Binding StartPoint}"></TextBlock>
+                                    <Separator  Background="Purple"></Separator>
+                                    <TextBlock Margin="5" FontSize="16" Foreground="White">To</TextBlock>
+                                    <TextBlock Margin="5" FontSize="16" Foreground="White" Text="{Binding EndPoint}"></TextBlock>
+                                    <Separator  Background="Purple"></Separator>
+                                    <TextBlock Margin="5" FontSize="16" Foreground="White">Date</TextBlock>
+                                    <TextBlock Margin="5" FontSize="16" Foreground="White" Text="{Binding TravelDate}"></TextBlock>
+                                    <Separator  Background="Purple"></Separator>
+                                    <TextBlock Margin="5" FontSize="16" Foreground="White">Price</TextBlock>
+                                    <TextBlock Margin="5" FontSize="16" Foreground="White" Text="{Binding Price}"></TextBlock>
+                                </StackPanel>
+                            </Border>
+                        </Expander>
+                            <!--<StackPanel Background="Black" Height="40" Orientation="Horizontal">
+                            <Label Margin="5" Foreground="White" Content="{Binding EndPoint}"/>
+
+                            <Label Margin="5" Foreground="White" Content="{Binding TravelDate}"/>
+
+                            <Label Margin="5" Foreground="White" Content="{Binding Price}"/>
+                            <Label Margin="5" Foreground="White" Content="AZN"/>
+
+                            <Button  Margin="5" Command="{Binding InfoButtonCommand}" Content="Info" ></Button>
+                        </StackPanel>-->
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+
+
+
+        </Grid>
+
+
+
+    </Grid>
 
 
 </UserControl>
