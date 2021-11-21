@@ -95,6 +95,7 @@
     </Compile>
     <Compile Include="Commands\AddDriverCommand.cs" />
     <Compile Include="Commands\EditDriverCommand.cs" />
+    <Compile Include="Converter\NullToBooleanConverter.cs" />
     <Compile Include="Models\Pricing.cs" />
     <Compile Include="Models\Statistic.cs" />
     <Compile Include="Services\CreateStatisticService.cs" />

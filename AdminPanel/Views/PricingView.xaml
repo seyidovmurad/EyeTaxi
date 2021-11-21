@@ -1,13 +1,14 @@
 ﻿<UserControl x:Class="AdminPanel.Views.PricingView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:AdminPanel.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" FontFamily="TimesNewRoman" FontSize="22">
 
-   
+
     <Grid Background="White">
         <!--<Grid.Background>
             <LinearGradientBrush EndPoint="0.982,0.5" StartPoint="0.023,0.5">
@@ -22,12 +23,21 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
 
-        
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="50,0,0,0" Grid.Row="2">
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="40,38.333,10,38.333" Grid.Row="1">
             <TextBlock Text="Pricing Per Km:" VerticalAlignment="Center"/>
-            <TextBox x:Name="PriceTxtb" VerticalAlignment="Center" Margin="10,0,20,0" Width="100" Text="{Binding Pricing.PricePerKm, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" />
-            <Button Content="Change Pricing" Command="{Binding ChangePricingCommand}" Style="{StaticResource WithBorderBtn}"/>
+            <TextBox
+                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                x:Name="PriceTxtb" VerticalAlignment="Center" Margin="10,0,20,0" Width="100" Text="{Binding Pricing.PricePerKm, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right"
+                FontSize="20"  Tag="0" />
+            <Button 
+                Style="{StaticResource MaterialDesignOutlinedDarkButton}"
+                ToolTip="MaterialDesignOutlinedButton"
+                Width="145"
+                Content="Change Pricing"
+                Command="{Binding ChangePricingCommand}"
+                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"  />
         </StackPanel>
-        
+
     </Grid>
 </UserControl>

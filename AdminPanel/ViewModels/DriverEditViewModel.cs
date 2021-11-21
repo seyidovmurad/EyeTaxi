@@ -14,6 +14,7 @@ namespace AdminPanel.ViewModels
 {
     public class DriverEditViewModel : BaseViewModel
     {
+
         public ICommand SaveCommand { get; set; }
 
         public ICommand CancelCommand { get; set; }
@@ -38,10 +39,14 @@ namespace AdminPanel.ViewModels
         {
             Driver = new Driver();
             Driver.LastLocation = RandomLocationService.RandomLocation();
-            SaveCommand = new AddDriverCommand<DriverListViewModel>(new DriverListViewModel(navigation), Driver, navigation);
+            SaveCommand = new AddDriverCommand<DriverListViewModel>(new DriverListViewModel(navigation), Driver, navigation,AddDriver);
             CancelCommand = new UpdateViewCommand<DriverListViewModel>(navigation, () => new DriverListViewModel(navigation));
         }
-
+        private bool AddDriver(object obj)
+        {
+            return Driver.isEmpty() ? false :true;
+        }
         
+
     }
 }

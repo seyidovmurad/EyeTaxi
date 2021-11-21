@@ -35,7 +35,7 @@ namespace AdminPanel.Models
 
         public bool IsEmpty()
         {
-            return !(string.IsNullOrEmpty(Model) && string.IsNullOrEmpty(Vendor) && string.IsNullOrEmpty(Color) && string.IsNullOrEmpty(Year));
+            return string.IsNullOrEmpty(Model) && string.IsNullOrEmpty(Vendor) && string.IsNullOrEmpty(Color) && string.IsNullOrEmpty(Year);
         }
 
         public bool IsWhiteSpace()
