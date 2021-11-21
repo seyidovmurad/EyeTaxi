@@ -9,7 +9,7 @@ namespace AdminPanel.Models
     public class Pricing
     {
         public float PricePerKm { get; set; }
-
+        
         public Pricing()
         {
             PricePerKm = 0.7f;

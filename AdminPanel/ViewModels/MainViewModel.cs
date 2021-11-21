@@ -17,24 +17,28 @@ namespace AdminPanel.ViewModels
         private readonly NavigationStore _navigation;
         public BaseViewModel SelectedViewModel { get; set; }
 
-        public NavigationBarViewModel NavigationBarViewModel { get; set; }
+        public ICommand NavigateDriverListCommand { get; set; }
+
+        public ICommand NavigateAddDriverCommand { get; set; }
+
+        public ICommand NavigateDriverPricingCommand { get; set; }
+
+        public ICommand NavigateStatisticsCommand { get; set; }
 
         public MainViewModel (NavigationStore navigation)
         {
             _navigation = navigation;
             _navigation.SelectedViewModelChanged += OnSelectedViewChanged;
+            NavigateAddDriverCommand = new UpdateViewCommand<DriverEditViewModel>(navigation, () => new DriverEditViewModel(navigation));
+            NavigateDriverListCommand = new UpdateViewCommand<DriverListViewModel>(navigation, () => new DriverListViewModel(navigation));
+            NavigateDriverPricingCommand = new UpdateViewCommand<PricingViewModel>(navigation, () => new PricingViewModel());
+            NavigateStatisticsCommand = new UpdateViewCommand<StatisticsViewModel>(navigation, () => new StatisticsViewModel());
             SelectedViewModel = _navigation.SelectedViewModel;
-            NavigationBarViewModel = new NavigationBarViewModel(navigation);
-            NavigationBarViewModel.PropertyChanged += NavigationBar_PropertyChanged;
-        }
-
-        private void NavigationBar_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            SelectedViewModel = NavigationBarViewModel.SelectedViewModel;
         }
 
         protected void OnSelectedViewChanged()
         {
+            SelectedViewModel = _navigation.SelectedViewModel;
             OnPropertChanged(nameof(SelectedViewModel));
         }
     }

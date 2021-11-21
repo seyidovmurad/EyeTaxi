@@ -9,6 +9,12 @@
 
    
     <Grid Background="White">
+        <!--<Grid.Background>
+            <LinearGradientBrush EndPoint="0.982,0.5" StartPoint="0.023,0.5">
+                    <GradientStop Color="#FF000040" Offset="1"/>
+                    <GradientStop Color="#FF010121"/>
+                </LinearGradientBrush>
+        </Grid.Background>-->
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
@@ -16,22 +22,12 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="50,0,0,0">
-            <TextBlock VerticalAlignment="Center" Text="Monthly Income:"/>
-            <TextBox IsEnabled="False" VerticalAlignment="Center" Margin="10,0,20,0" Width="70" Text="{Binding Statistic.MonthlyIncome, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right"/>
-
-            <TextBlock VerticalAlignment="Center" Text="Daily Income:"/>
-            <TextBox IsEnabled="False" VerticalAlignment="Center"  Margin="10,0,20,0" Width="70" Text="{Binding Statistic.DailyIncome, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right"/>
-        </StackPanel>
+        
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="50,0,0,0" Grid.Row="2">
             <TextBlock Text="Pricing Per Km:" VerticalAlignment="Center"/>
-            <TextBox x:Name="PriceTxtb" VerticalAlignment="Center" Margin="10,0,20,0" Width="100" Text="{Binding Pricing.PricePerKm, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" PreviewTextInput="PriceTxtb_PreviewTextInput"/>
+            <TextBox x:Name="PriceTxtb" VerticalAlignment="Center" Margin="10,0,20,0" Width="100" Text="{Binding Pricing.PricePerKm, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" />
             <Button Content="Change Pricing" Command="{Binding ChangePricingCommand}" Style="{StaticResource WithBorderBtn}"/>
         </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="50,0,0,0">
-            <TextBlock VerticalAlignment="Center" Text="Interest:"/>
-            <TextBox  IsEnabled="False" VerticalAlignment="Center" Margin="10,0,20,0" Width="70" Text="{Binding Statistic.Interest, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right"/>
-            <Button Content="Get Interest" Command="{Binding GetInterestCommand, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource WithBorderBtn}"/>
-        </StackPanel>
+        
     </Grid>
 </UserControl>

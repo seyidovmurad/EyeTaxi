@@ -117,6 +117,7 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\MapVIewModel.cs" />
+    <Compile Include="ViewModels\RatingViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="Views\HistoryView.xaml.cs">
       <DependentUpon>HistoryView.xaml</DependentUpon>
@@ -129,6 +130,9 @@
     </Compile>
     <Compile Include="Views\MapView.xaml.cs">
       <DependentUpon>MapView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RatingView.xaml.cs">
+      <DependentUpon>RatingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RegisterView.xaml.cs">
       <DependentUpon>RegisterView.xaml</DependentUpon>
@@ -158,6 +162,10 @@
     <Page Include="Views\MapView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\RatingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RegisterView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -215,6 +223,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\zor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\rengli.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\rengsiz.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.5.1\build\Fody.targets" Condition="Exists('..\packages\Fody.6.5.1\build\Fody.targets')" />

@@ -58,7 +58,7 @@
         
         <!--Buttons-->
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Margin="10,9" Padding="30,0" Style="{StaticResource WithBorderBtn}" Content="Save" Command="{Binding SaveCommand}" Click="Button_Click"/>
+                <Button Margin="10,9" Padding="30,0" Style="{StaticResource WithBorderBtn}" Content="Save" Command="{Binding SaveCommand}"/>
                     <Button  Margin="0,9,20,9"  x:Name="c" Padding="30,0"  Style="{StaticResource WithBorderBtn}" Content="Cancel" Command="{Binding CancelCommand}"/>
         </StackPanel>
     </Grid>

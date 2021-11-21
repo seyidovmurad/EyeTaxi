@@ -65,25 +65,26 @@ namespace UserPanel.ViewModels
             NavigateBackCommand = new UpdateViewCommand<RegisterViewModel>(NV, () => new RegisterViewModel(NV));
             CancelRideCommand = new RelayCommand(a => CancelRideButton_Click());
             NavigateHistoryCommand = new UpdateViewCommand<HistoryViewModel>(NV, () => new HistoryViewModel(NV) { HistoryUsr = Usr });
-
+            NavigateRatingCommand = new UpdateViewCommand<RatingViewModel>(NV, () => new RatingViewModel(NV));
         }
 
-        public string CurrentLocation { get; set; }
 
-        public string FromLocation { get; set; }
+        public ICommand GoCommand { get; set; }
 
-        public string ToLocation { get; set; }
-
-        public RelayCommand GoCommand { get; set; }
-
-        public RelayCommand OrderTaxiCommand { get; set; }
+        public ICommand OrderTaxiCommand { get; set; }
 
         public ICommand NavigateBackCommand { get; set; }
 
         public ICommand NavigateHistoryCommand { get; set; }
 
+        public ICommand CancelRideCommand { get; set; }
 
-        public RelayCommand CancelRideCommand { get; set; }
+        public ICommand NavigateRatingCommand { get; set; }
+
+
+        public string FromLocation { get; set; }
+
+        public string ToLocation { get; set; }
 
         public string From { get; set; }
 
@@ -135,9 +136,9 @@ namespace UserPanel.ViewModels
 
         DispatcherTimer Timer;
 
-        bool Help = false;
-
         bool PickedUp = false;
+
+
 
 
         private Driver _driver;
@@ -168,7 +169,7 @@ namespace UserPanel.ViewModels
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if (Help == false)
+            if (PickedUp == false)
             {
                 if (1 < Locations.Count)
                 {
@@ -180,7 +181,6 @@ namespace UserPanel.ViewModels
                 {
                     PickedUp = true;
                     Timer.Stop();
-                    Help = true;
                     System.Windows.MessageBox.Show("Taxi Arrived!!!");
                     Locations.Clear();
                     IsVisiblePin1 = Visibility.Hidden;
@@ -199,6 +199,7 @@ namespace UserPanel.ViewModels
                     TaxiLocation = Locations.First().Latitude + ", " + Locations.First().Longitude;
                     Centerr = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
                 }
+
                 else
                 {
 
@@ -207,7 +208,6 @@ namespace UserPanel.ViewModels
                     JsonSaveService<List<User>>.Save(Users, "Users");
 
                     CreateStatisticService.SetStatistic(float.Parse(Price));
-                    PickedUp = false;
                     Timer.Stop();
 
                     Drivers.Find(d => d.Id == driver.Id).LastLocation = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
@@ -215,7 +215,7 @@ namespace UserPanel.ViewModels
                     JsonSaveService<List<Driver>>.Save(Drivers, path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
 
 
-                    Help = false;
+                    PickedUp = false;
                     System.Windows.MessageBox.Show("Taxi Arrived!!!");
                     TaxiVisible = Visibility.Hidden;
                     To = default;
@@ -231,6 +231,11 @@ namespace UserPanel.ViewModels
                     Distance = "";
                     Price = "";
                     Centerr = new Location(40.409264, 49.867092);
+
+                    RatingViewModel.Driver = driver;
+                    RatingViewModel.Drivers = Drivers;
+
+                    NavigateRatingCommand.Execute(sender);
                 }
             }
         }
@@ -280,14 +285,13 @@ namespace UserPanel.ViewModels
             }
 
 
-
             Timer.Stop();
-
             Drivers.Find(d => d.Id == driver.Id).LastLocation = new Location(double.Parse(TaxiLocation.Split(',')[0]), double.Parse(TaxiLocation.Split(',')[1]));
 
             JsonSaveService<List<Driver>>.Save(Drivers, path + @"\EyeTaxi\AdminPanel\bin\Debug\driver");
 
-            Help = false;
+
+            Locations.Clear();
             System.Windows.MessageBox.Show("You have cancelled the ride!!!");
             TaxiVisible = Visibility.Hidden;
             To = default;
@@ -310,6 +314,7 @@ namespace UserPanel.ViewModels
         public void ConfirmButton_Click()
         {
             Locations.Clear();
+
             if (ChckBox == false)
             {
                 Centerr = GetRouteService.GetRoute(FromLocation, ToLocation, Locations);
@@ -319,6 +324,7 @@ namespace UserPanel.ViewModels
                     To = Locations[Locations.Count - 1].ToString();
                 }
             }
+
             else
             {
                 Centerr = GetRouteService.GetRoute(From, To, Locations);

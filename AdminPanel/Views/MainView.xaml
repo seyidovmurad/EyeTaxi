@@ -4,15 +4,94 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AdminPanel.Views"
-        mc:Ignorable="d"
-        Title="MainView" Height="450" Width="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d" Height="600" Width="1024" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" WindowStyle="None"  >
+    <!--<Grid >
+        -->
+    <!--<ContentControl  Content="{Binding NavigationBarViewModel}"/>-->
+    <!--
+        <ContentControl Grid.Column="1" Content="{Binding SelectedViewModel}"/>
+    </Grid>-->
 
-        <ContentControl  Content="{Binding NavigationBarViewModel}"/>
-        <ContentControl Grid.Row="1" Content="{Binding SelectedViewModel}"/>
+    <Grid Background="#FFEEEEEE" MouseDown="Grid_MouseDown">
+        <StackPanel VerticalAlignment="Top">
+            <Grid Background="#FF0069C0" Height="10"/>
+            <Grid Margin="5">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10 0">
+                    <Button x:Name="ButtonFechar" Width="30" Height="30" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" Foreground="Gray" Click="ButtonFechar_Click">
+                        <materialDesign:PackIcon Kind="Power"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+
+        <Grid Margin="250 55 0 0">
+            <ContentControl Grid.Column="1" Content="{Binding SelectedViewModel}"/>
+        </Grid>
+
+        <Grid Width="250" HorizontalAlignment="Left" Background="#FF222222">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="27*" ></RowDefinition>
+                <RowDefinition Height="43.333"></RowDefinition>
+                <RowDefinition Height="43.333"></RowDefinition>
+                <RowDefinition Height="43.333"></RowDefinition>
+                <RowDefinition Height="43.333"></RowDefinition>
+                <RowDefinition Height="50*" ></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Admin Panel" FontSize="30" Margin="10"  Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"></TextBlock>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <Image Margin="10" Source="/Assets/pricing.png"></Image>
+                <Button
+                    Command="{Binding NavigateDriverPricingCommand}"
+                    Style="{StaticResource MaterialDesignPaperLightButton}"
+                    Width="187"
+                    ToolTip="Resource name: MaterialDesignPaperLightButton"
+                    Content="Pricing"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Margin="0,6,0,5.333" >
+                    
+                </Button>
+            
+            </StackPanel>
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <Image Margin="10" Source="/Assets/driverList.png"></Image>
+                <Button
+                    Command="{Binding NavigateDriverListCommand}"
+                    Style="{StaticResource MaterialDesignPaperLightButton}"
+                    Width="187"
+                    ToolTip="Resource name: MaterialDesignPaperLightButton"
+                    Content="Drivers"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Margin="0,6,0,5.333" >
+
+                </Button>
+
+            </StackPanel>
+            <StackPanel Grid.Row="3" Orientation="Horizontal">
+                <Image Margin="10" Source="/Assets/addDriver.png"></Image>
+                <Button
+                    Command="{Binding NavigateAddDriverCommand}"
+                    Style="{StaticResource MaterialDesignPaperLightButton}"
+                    Width="187"
+                    ToolTip="Resource name: MaterialDesignPaperLightButton"
+                    Content="Add Driver"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Margin="0,6,0,5.333" >
+
+                </Button>
+
+            </StackPanel>
+            <StackPanel Grid.Row="4" Orientation="Horizontal">
+                <Image Margin="10" Source="/Assets/statistics.png"></Image>
+                <Button
+                    Command="{Binding NavigateStatisticsCommand}"
+                    Style="{StaticResource MaterialDesignPaperLightButton}"
+                    Width="187"
+                    ToolTip="Resource name: MaterialDesignPaperLightButton"
+                    Content="Statistics"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" Margin="0,6,0,5" >
+
+                </Button>
+
+            </StackPanel>
+        </Grid>
+
     </Grid>
 </Window>

@@ -24,29 +24,14 @@ namespace AdminPanel.ViewModels
             }
         }
 
-        private Statistic _statistic;
-        public Statistic Statistic
-        {
-            get => _statistic;
-            set
-            {
-                _statistic = value;
-                OnPropertChanged("Statistic");
-            }
-        }
+        
 
         public ICommand ChangePricingCommand { get; set; }
 
-        public ICommand GetInterestCommand { get; set; }
 
         public PricingViewModel()
         {
-            Statistic = JsonSaveService<Statistic>.Load("statistic");
-
-            Pricing = JsonSaveService<Pricing>.Load("pricing");
-
-            if(Statistic == null)
-                Statistic = new Statistic();
+            
 
             if(Pricing == null)
             {
@@ -61,20 +46,7 @@ namespace AdminPanel.ViewModels
             });
 
 
-            GetInterestCommand = new RelayCommand(a =>
-            {
-                Statistic.Interest = "0";
-                Statistic.IncomeAfterLWD = 0;
-                JsonSaveService<Statistic>.Save(Statistic, "statistic");
-
-            },
-            p =>
-            {
-
-                if (Statistic.IncomeAfterLWD > 0)
-                    return true;
-                return false;
-            });
+            
         }
 
     }

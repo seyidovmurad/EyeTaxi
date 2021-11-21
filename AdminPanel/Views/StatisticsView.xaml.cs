@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,17 +16,13 @@ using System.Windows.Shapes;
 namespace AdminPanel.Views
 {
     /// <summary>
-    /// Interaction logic for PricingView.xaml
+    /// Interaction logic for StatisticsView.xaml
     /// </summary>
-    public partial class PricingView : UserControl
+    public partial class StatisticsView : UserControl
     {
-        public PricingView()
+        public StatisticsView()
         {
             InitializeComponent();
         }
-
-        
-
-        
     }
 }

@@ -12,9 +12,14 @@ namespace AdminPanel.Models
     public class Driver
     {
         public int Id { get; set; }
+
+        public int RatingSum { get; set; }
+
+        public int RatingCount { get; set; }
+        
         public float Balance { get; set; }
 
-        public float Rating { get; set; }
+        public string Rating { get; set; }
 
         public string Name { get; set; }
 
@@ -26,7 +31,7 @@ namespace AdminPanel.Models
 
         public Car Car { get; set; }
 
-        public Driver(float balance, float rating, string name, string surname, string phoneNumber, Location lastLocation, Car car)
+        public Driver(float balance, string rating, string name, string surname, string phoneNumber, Location lastLocation, Car car)
         {
             Balance = balance;
             Rating = rating;
@@ -41,7 +46,7 @@ namespace AdminPanel.Models
         {
             LastLocation = new Location();
             Car = new Car();
-            Rating = 5;
+            Rating = "5";
 
         }
 
