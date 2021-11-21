@@ -29,8 +29,17 @@ namespace AdminPanel.Views
             InitializeComponent();
 
             NavigationStore navigation = new NavigationStore();
-            navigation.SelectedViewModel = new PricingViewModel();
+            navigation.SelectedViewModel = new DriverListViewModel(navigation);
             DataContext = new MainViewModel(navigation);
+        }
+        private void ButtonFechar_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
     }
 }

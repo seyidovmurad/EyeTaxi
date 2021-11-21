@@ -35,6 +35,18 @@ namespace AdminPanel.ViewModels
             }
         }
 
+        private string _money;
+
+        public string Money
+        {
+            get => _money;
+            set
+            {
+                _money = value;
+                OnPropertChanged("Money");
+            }
+        }
+
         public ICommand ChangePricingCommand { get; set; }
 
         public ICommand GetInterestCommand { get; set; }
@@ -44,6 +56,8 @@ namespace AdminPanel.ViewModels
             Statistic = JsonSaveService<Statistic>.Load("statistic");
 
             Pricing = JsonSaveService<Pricing>.Load("pricing");
+
+            Money = Statistic.Interest;
 
             if(Statistic == null)
                 Statistic = new Statistic();
@@ -64,6 +78,7 @@ namespace AdminPanel.ViewModels
             GetInterestCommand = new RelayCommand(a =>
             {
                 Statistic.Interest = "0";
+                Money = "0";
                 Statistic.IncomeAfterLWD = 0;
                 JsonSaveService<Statistic>.Save(Statistic, "statistic");
 
@@ -71,7 +86,7 @@ namespace AdminPanel.ViewModels
             p =>
             {
 
-                if (Statistic.IncomeAfterLWD > 0)
+                if (Convert.ToDouble(Money) > 0)
                     return true;
                 return false;
             });
